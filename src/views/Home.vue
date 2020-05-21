@@ -2,6 +2,7 @@
   <div class="home">
     <Header/>
     <FilterBox/>    
+    <Listing/>
     <!-- <img alt="Vue logo" src="../assets/logo.png"> -->
     <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
   </div>
@@ -12,6 +13,7 @@
 // import HelloWorld from '@/components/HelloWorld.vue'
 import Header from '@/components/MainPage/Header.vue'
 import FilterBox from '@/components/MainPage/FilterBox.vue'
+import Listing from '@/components/MainPage/Listing.vue'
 
 export default {
   name: 'Home',
@@ -19,6 +21,14 @@ export default {
     // HelloWorld,
     Header,
     FilterBox,    
+    Listing
   }
 }
 </script>
+
+<style scoped>
+.home {
+  display: flex;
+  flex-direction: column;
+}
+</style>
