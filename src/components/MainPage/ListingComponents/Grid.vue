@@ -25,9 +25,10 @@ export default class Grid extends Vue {
 
 <style scoped>
 .mainGrid{
-    margin: 120px auto;    
+    margin: auto;    
     display: flex;        
     width: 100%;
+    /* border: 1px dotted black; */
 }
 .outlineGrid{
     margin: auto;

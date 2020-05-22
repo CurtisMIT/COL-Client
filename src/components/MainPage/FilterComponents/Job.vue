@@ -1,7 +1,7 @@
 <template>
     <div class="mainJob">
         <div class="title">
-            Job
+            Job Title
         </div>
         <div class="inputJob"></div>
     </div>
@@ -21,8 +21,8 @@ export default class Job extends Vue {
     display: flex;
     flex-direction: column;
     padding-top: 29px;
-    padding-right: 24px;
-    width: 384px;        
+    padding-left: 44px;   
+    width: 384px;       
 }
 .title {    
     margin: auto auto 12px 0px;
