@@ -4,23 +4,24 @@
         <div class="title">
             Job Title
         </div>        
-        <!-- <div class="inputJob"></div> -->        
-        <div class="demo">            
-            <div class="autosuggest-container">
+        <!-- <div class="inputJob"></div>         -->
+        <div class="demo">          
+          <div class="autosuggest-container">
             <vue-autosuggest
-                v-model="query"
-                :suggestions="filteredOptions"
-                @focus="focusMe"
-                @click="clickHandler"
-                @input="onInputChange"
-                @selected="onSelected"
-                :get-suggestion-value="getSuggestionValue"
-                :input-props="inputProps">
-                <div slot-scope="{suggestion}" style="display: flex; align-items: center;">                
-                <div style="{ display: 'flex', color: 'navyblue'}">{{suggestion.item.name}}</div>
-                </div>
+              v-model="query"
+              :suggestions="filteredOptions"
+              @focus="focusMe"              
+              @input="onInputChange"
+              @selected="onSelected"
+              :get-suggestion-value="getSuggestionValue"
+              :input-props="inputProps"
+              >              
+              <div slot-scope="{suggestion}" >          
+                <div >
+                  {{suggestion.item.name}}</div>
+              </div>              
             </vue-autosuggest>
-            </div>
+          </div>
         </div>
     </div>
 </template>
@@ -36,19 +37,20 @@ import { VueAutosuggest }from "vue-autosuggest";
     data() {
     return {
       query: "",
-      selected: "",
+      selected: "",      
+      // populate suggestions from db
       suggestions: [
         {
           data: [
-            { id: 1, name: "Frodo", race: "Hobbit", avatar: "https://upload.wikimedia.org/wikipedia/en/thumb/4/4e/Elijah_Wood_as_Frodo_Baggins.png/220px-Elijah_Wood_as_Frodo_Baggins.png" },
-            { id: 2, name: "Samwise", race: "Hobbit", avatar: "https://upload.wikimedia.org/wikipedia/en/thumb/7/7b/Sean_Astin_as_Samwise_Gamgee.png/200px-Sean_Astin_as_Samwise_Gamgee.png" },
-            { id: 3, name: "Gandalf", race: "Maia", avatar: "https://upload.wikimedia.org/wikipedia/en/thumb/e/e9/Gandalf600ppx.jpg/220px-Gandalf600ppx.jpg" },
-            { id: 4, name: "Aragorn", race: "Human", avatar: "https://upload.wikimedia.org/wikipedia/en/thumb/3/35/Aragorn300ppx.png/150px-Aragorn300ppx.png" }
+            { id: 1, name: "Product Designer", },
+            { id: 2, name: "Software Developer",},
+            { id: 3, name: "HR Manager",},          
           ]
         }
       ],
       inputProps: {
-          placeholder: "Select a job title",          
+          id:'autosuggest__input',          
+          placeholder: "Select a job title",                    
           style: {
               height: '52px',
               width: '328px',
@@ -57,7 +59,9 @@ import { VueAutosuggest }from "vue-autosuggest";
               border: 'none',
               fontSize: '16px',  
               textIndent: '20px',
-              outline: 'none'                     
+              outline: 'none',                
+              marginRight: '200px',
+              color: "#2C2C2C"                            
             }
       }
     };
@@ -73,10 +77,7 @@ import { VueAutosuggest }from "vue-autosuggest";
       ];
     }
   },
-  methods: {
-    clickHandler(item) {
-      // event fired when clicking on the input
-    },
+  methods: {    
     onSelected(item) {
       this.selected = item.item;
     },
@@ -91,7 +92,7 @@ import { VueAutosuggest }from "vue-autosuggest";
       return suggestion.item.name;
     },
     focusMe(e) {
-      console.log(e) // FocusEvent
+      console.log(e)
     }
   }
     
@@ -102,7 +103,7 @@ export default class Job extends Vue {
 }
 </script>
 
-<style scoped>
+<style>
 .mainJob {
     display: flex;
     flex-direction: column;
@@ -121,61 +122,51 @@ export default class Job extends Vue {
     width: 328px;
     background-color: #ECECF2;
     border-radius: 10px;
+    
 }
 
 .demo { 
   font-family: 'Noto Sans', sans-serif;  
+  width: 328px;
 }
-
-input {
-  width: 384px;  
-  height: 52px;  
-  font-family: 'Noto Sans', sans-serif;
-  border: 1px solid blue;
-}
-
 ul {
+  position: absolute;
   width: 100%;
   color: rgba(30, 39, 46,1.0);
   list-style: none;
-  margin: 0;
+  margin-top: -10px;
   padding: 0.5rem 0 .5rem 0;
+  width: 330px;
+  background-color: #ECECF2;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  max-height: 168px;
+  overflow-y: scroll;
 }
 li {
-  margin: 0 0 0 0;
-  border-radius: 5px;
-  padding: 0.75rem 0 0.75rem 0.75rem;
+  border-top: 1px solid rgba(42,44,80, 0.13);
+  border-bottom: 1px solid #ECECF2;
+  margin: auto;    
+  padding: 0.75rem 0 0.75rem 20px;
   display: flex;
-  align-items: center;
+  align-items: center;   
 }
 li:hover {
+  border-top: 1px solid #2A2C50;
+  border-bottom: 1px solid #2A2C50;
+  font-weight: bold;
   cursor: pointer;
 }
 
 .autosuggest-container {
   display: flex;
   justify-content: center;
-  width: 384px;
-  height: 100px;
+  width: 280px;
 }
 
 #autosuggest { 
-    width: 384px; 
-    display: block;}
-.autosuggest__results-item--highlighted {
-  background-color: rgba(51, 217, 178,0.2);
+  width: 100%; 
+  display: block;
 }
-    #autosuggest__input {
-      outline: none;
-      position: relative;
-      display: block;
-      font-family: monospace;
-      font-size: 20px;
-      border: 1px solid #616161;
-      
-      width: 100%;
-      box-sizing: border-box;
-      -webkit-box-sizing: border-box;
-      -moz-box-sizing: border-box;
-    }
+
 </style>
