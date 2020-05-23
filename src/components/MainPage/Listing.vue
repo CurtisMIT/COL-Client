@@ -1,47 +1,38 @@
 <template>
     <div class="mainListing">
         <div class="switch">
-            <img v-if="view === 'Grid'" class="switchClick" src="../../assets/icons/grid.svg" />
-            <img v-if="view === 'List'"  v-on:click="setView('Grid')" class="switchClick"  src="../../assets/icons/gridx.svg" />
-            <img v-if="view === 'List'" class="switchClick" src="../../assets/icons/list.svg" />
-            <img v-if="view === 'Grid'" v-on:click="setView('List')" class="switchClick"  src="../../assets/icons/listx.svg" />        
+            <img v-if="listings.view === 'Grid'" class="switchClick" src="../../assets/icons/grid.svg" />
+            <img v-if="listings.view === 'List'"  v-on:click="changeView('Grid')" class="switchClick"  src="../../assets/icons/gridx.svg" />
+            <img v-if="listings.view === 'List'" class="switchClick" src="../../assets/icons/list.svg" />
+            <img v-if="listings.view === 'Grid'" v-on:click="changeView('List')" class="switchClick"  src="../../assets/icons/listx.svg" />                    
         </div>
-        <Grid v-if="view === 'Grid'"/>
-        <List v-if="view === 'List'"/>
+        <Grid v-if="listings.view === 'Grid'"/>
+        <List v-if="listings.view === 'List'"/>
     </div>    
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { mapState } from 'vuex'
+import { State, Action } from 'vuex-class'
 import Grid from './ListingComponents/Grid.vue'
 import List from './ListingComponents/List.vue'
+import { ViewState } from '../../types/modules/listingsTypes'
+const namespace = 'listings'
 
-@Component({
+
+@Component({        
     components: {
         Grid,
         List
     },
-    // mounted() {
-    //     console.log('wasssup')
-    // },
-    computed: {
-        ...mapState({
-            // eslint-disable-next-line 
-            view: (state: any) => state.listings.view
-        }),
-    },
-    methods: {
-        setView(viewType: string) {
-            this.$store.dispatch('listings/changeView', viewType)
-        },
-        testing (word) {
-            console.log(word)
-        }
-    }
 })
-export default class Listing extends Vue {
+
+export default class Listing extends Vue {      
+    @State('listings') listings!: ViewState       
+    @Action('changeView', { namespace }) changeView!: () => void;
     
+    
+
 }
 
 </script>

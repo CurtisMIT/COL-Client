@@ -1,6 +1,6 @@
 <template>
     <div class="mainGrid">
-        <div class="outlineGrid" v-for="entry in entries" :key="entry.id">
+        <div class="outlineGrid" v-for="entry in listings.entries" :key="entry.id">
             <div class="contentGrid">
                 <div class="headGrid">
                     <div class="titleGrid">{{entry.job}}</div>                    
@@ -27,18 +27,12 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { mapState } from 'vuex'
+import { State } from 'vuex-class'
+import { ViewState } from '../../../types/modules/listingsTypes'
 
-@Component({        
-    computed: {
-        ...mapState({
-            // eslint-disable-next-line
-            entries: (state: any) => state.listings.entries
-        })
-    }
-})
-
+@Component
 export default class Grid extends Vue {       
+    @State('listings') listings!: ViewState   
 }
 </script>
 
