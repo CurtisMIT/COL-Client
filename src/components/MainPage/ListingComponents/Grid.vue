@@ -46,11 +46,12 @@ export default class Grid extends Vue {
 .mainGrid{
     margin: auto;    
     display: flex;        
-    width: 100%;
+    width: 100%;    
+    flex-wrap: wrap;
     /* border: 1px dotted black; */
 }
 .outlineGrid{    
-    margin: auto;    
+    margin: auto 17.5px 25px 17.5px;    
     width: 328px;
     border: 1.5px solid #BFC1DA;
     border-radius: 10px;    
