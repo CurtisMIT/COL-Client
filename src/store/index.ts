@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import listingView from './modules/listingView'
+import listings from './modules/listings'
 
 Vue.use(Vuex)
 
@@ -12,6 +12,6 @@ export default new Vuex.Store({
   actions: {
   },
   modules: {
-    listingView
+    listings
   }
 })

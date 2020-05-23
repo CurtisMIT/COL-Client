@@ -1,7 +1,11 @@
 
 
 const state = () => ({
-    view: 'Grid'
+    view: 'Grid',
+    // testing, later use to populate all datas
+    entries: [
+        {id: 1, job: "Sr. Product Designer", experience: '5 years', location: 'San Francisco', industry: 'Hospitality', earnings: '$65,790', expenses: '$12,000', quote: 'Party all day and night, money straight from stock market.', tag1: '✈️ Traveler', tag2: '🥘 Foodie', date: 'May 2020'}
+    ]
 })
 
 const getters = {

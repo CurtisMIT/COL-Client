@@ -28,12 +28,12 @@ import List from './ListingComponents/List.vue'
     computed: {
         ...mapState({
             // eslint-disable-next-line 
-            view: (state: any) => state.listingView.view
+            view: (state: any) => state.listings.view
         }),
     },
     methods: {
         setView(viewType: string) {
-            this.$store.dispatch('listingView/changeView', viewType)
+            this.$store.dispatch('listings/changeView', viewType)
         },
         testing (word) {
             console.log(word)
