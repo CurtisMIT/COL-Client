@@ -2,8 +2,8 @@
     <div class="main">        
         <div class="mainFrame">  
             <div class="inputDiv">
-                <Location/>   
                 <Job/>  
+                <Location/>                   
             </div>   
             <div>
                 <MoreFilters/>

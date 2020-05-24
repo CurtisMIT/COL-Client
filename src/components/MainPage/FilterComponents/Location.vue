@@ -21,8 +21,8 @@ export default class Location extends Vue {
     display: flex;
     flex-direction: column;
     padding-top: 29px;
-    padding-left: 44px;   
-    width: 384px;
+    padding-right: 24px;
+    width: 384px; 
     
 }
 .title {    
