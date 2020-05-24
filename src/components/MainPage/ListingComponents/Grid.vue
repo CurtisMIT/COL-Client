@@ -32,7 +32,7 @@ import { ViewState } from '../../../types/modules/listingsTypes'
 
 @Component
 export default class Grid extends Vue {       
-    @State('listings') listings!: ViewState   
+    @State('listings') listings!: ViewState 
 }
 </script>
 

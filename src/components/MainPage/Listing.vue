@@ -30,9 +30,6 @@ const namespace = 'listings'
 export default class Listing extends Vue {      
     @State('listings') listings!: ViewState       
     @Action('changeView', { namespace }) changeView!: () => void;
-    
-    
-
 }
 
 </script>
