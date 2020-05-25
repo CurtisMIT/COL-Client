@@ -29,6 +29,6 @@ export default {
 <style scoped>
 .home {
   display: flex;
-  flex-direction: column;
+  flex-direction: column;  
 }
 </style>

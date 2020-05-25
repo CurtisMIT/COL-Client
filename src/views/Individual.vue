@@ -1,7 +1,9 @@
 <template>
-  <div class="home">
+  <div class="mainIndividual">
     <Header/>
-    <Earnings/>
+    <Earnings/>    
+    <Expenses/>
+    <Market/>
   </div>
 </template>
 
@@ -9,19 +11,23 @@
 
 import Header from '@/components/IndividualPage/Header'
 import Earnings from '@/components/IndividualPage/Earnings'
+import Expenses from '@/components/IndividualPage/Expenses'
+import Market from '@/components/IndividualPage/Market'
 
 export default {
   name: 'Individual',
   components: {
     Header,
-    Earnings
+    Earnings,
+    Expenses,
+    Market
   }
 }
 </script>
 
 <style scoped>
-.home {
+.mainIndividual { 
   display: flex;
-  flex-direction: column;
+  flex-direction: column;    
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-    <div class="main">
+    <div class="mainTable">
         <div class="content">
             <div class="headerTable">
                 <div class="description">Description</div>
@@ -38,6 +38,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+// just need to plug some data and it'll be gucci to go
 
 @Component
 export default class Table extends Vue { 
@@ -51,22 +52,21 @@ export default class Table extends Vue {
 </script>
 
 <style scoped>
-.main {    
+.mainTable {    
     display: flex;    
-    flex-direction: column;    
-    margin-top: 45px;      
-    color: #2A2C50      
+    flex-direction: column;            
+    color: #2A2C50;     
+                  
 }
 .content {
     display: flex;
-    flex-direction: column;
-    margin: auto auto auto 0px;
+    flex-direction: column;    
     width: 458px;     
 }
 .headerTable {
     display: flex;
     font-size: 16px;
-    font-weight: bold;
+    font-weight: bold;    
 }
     .description {
         margin: auto auto auto 35px;

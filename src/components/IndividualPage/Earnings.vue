@@ -3,7 +3,11 @@
         <div class="content">
             <div class="headerEarnings">Earnings</div>
             <div class="divider"></div>
-            <Table/>
+            <div class="tablesEarnings">
+                <Table/>
+                <Graph/>
+            </div>
+            
         </div>
         
     </div>
@@ -13,10 +17,12 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import Table from './EarningsComponent/Table.vue'
+import Graph from './EarningsComponent/Graph.vue'
 
 @Component({
     components: {
-        Table
+        Table,
+        Graph
     }
 })
 export default class Earnings extends Vue { 
@@ -39,9 +45,18 @@ export default class Earnings extends Vue {
 .headerEarnings {  
     margin-right: auto;  
     font-size: 24px;    
+    
 }
 .divider {
     margin-top: 8px;
-    border: 1px solid #E9EAF8
+    margin-bottom: 0px;
+    border: 1px solid #E9EAF8;
+    
+
+}
+.tablesEarnings {
+    display: flex;
+    justify-content: space-between;        
+    margin-top: 45px;   
 }
 </style>
