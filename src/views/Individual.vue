@@ -4,6 +4,8 @@
     <Earnings/>    
     <Expenses/>
     <Market/>
+    <div class="otherSubmission">Other Submissions in X Area</div>
+    <Listing/>
   </div>
 </template>
 
@@ -13,6 +15,7 @@ import Header from '@/components/IndividualPage/Header'
 import Earnings from '@/components/IndividualPage/Earnings'
 import Expenses from '@/components/IndividualPage/Expenses'
 import Market from '@/components/IndividualPage/Market'
+import Listing from '@/components/MainPage/Listing'
 
 export default {
   name: 'Individual',
@@ -20,7 +23,8 @@ export default {
     Header,
     Earnings,
     Expenses,
-    Market
+    Market,
+    Listing
   }
 }
 </script>
@@ -29,5 +33,15 @@ export default {
 .mainIndividual { 
   display: flex;
   flex-direction: column;    
+     
 }
+.otherSubmission {
+  margin: 85px auto 40px;
+  text-align: left;
+  font-size: 24px;
+  font-weight: bold;
+  width: 1055px;      
+  color: #2A2C50
+}
+
 </style>

@@ -7,19 +7,15 @@
             </div>
             <div class="dividerTable"></div>
             <div class="costEntries">
-                <div class="costDiv">
+                <div v-for='d in data' :key="d.category" class="costDiv">
                     <div class="costEntry">
-                        <div class="costItem">Current Earnings</div>
-                        <div class="costAmount">$1,200</div>
-                        <img v-if="!text" v-on:click="text=!text" class="costToggle" src="../../../assets/icons/arrow.svg"/>
-                        <img v-else v-on:click="text=!text" class="costToggle" style=" transform: rotate(180deg);" src="../../../assets/icons/arrow.svg"/>
+                        <div class="costItem">{{d.category}}</div>
+                        <div class="costAmount">{{d.cost}}</div>
+                        <img v-if="!d.isOpen" v-on:click="d.isOpen=!d.isOpen" class="costToggle" src="../../../assets/icons/arrow.svg"/>
+                        <img v-else v-on:click="d.isOpen=!d.isOpen" class="costToggle" style=" transform: rotate(180deg);" src="../../../assets/icons/arrow.svg"/>
                     </div>
-                    <div v-if="text" class="costInfo">
-                        Salary was on an hourly basis  etc etc etc etc 
-                        sdadasdadasdasdasdaSalary was on an hourly basis 
-                         etc etc etc etc sdadasdadasdasdasdaSalary was on 
-                         an hourly basis  etc etc etc etc sdadasdadasdasdasdaSalary
-                        was on an hourly basis  etc etc etc etc sdadasdadasdasdasda
+                    <div v-if="d.isOpen" class="costInfo">
+                        {{d.text}}
                     </div>
                     <div class="costDivider"></div>
                 </div>
@@ -44,7 +40,13 @@ import { Component, Vue } from 'vue-property-decorator';
 export default class Table extends Vue { 
     data () {
         return {
-            text: false
+            text: false,
+            data: [
+             {category: 'Current Earnings', cost: 1200, text: 'Salary was on an hourly basis  etc etc etc etc', isOpen: false},
+             {category: 'Rent', cost: 600, text: 'Salary was on an hourly basis  etc etc etc etc', isOpen: false},
+             {category: 'Food', cost: 200, text: 'Salary was on an hourly basis  etc etc etc etc', isOpen: false},   
+             {category: 'Entertainment', cost: 1000, text: 'Salary was on an hourly basis  etc etc etc etc', isOpen: false},   
+            ]
         }
     }
 }
@@ -81,6 +83,7 @@ export default class Table extends Vue {
 .costEntries {
     max-height: 215px;    
     overflow-y: scroll;
+    border-bottom: 1px solid #2A2C50;
 }
 
 .costEntry {

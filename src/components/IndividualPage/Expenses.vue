@@ -4,7 +4,8 @@
             <div class="headerEarnings">Expenses</div>
             <div class="divider"></div>
             <div class="tablesEarnings">
-                <Table/>                
+                <Table/>    
+                <Pie/>            
             </div>
             
         </div>
@@ -16,11 +17,13 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import Table from './EarningsComponent/Table.vue'
+import Pie from './ExpensesComponent/Pie.vue'
 
 
 @Component({
     components: {
         Table,
+        Pie
         
     }
 })

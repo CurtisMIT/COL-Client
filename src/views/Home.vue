@@ -2,33 +2,59 @@
   <div class="home">
     <Header/>
     <FilterBox/>    
+    <div class="switchDisplay">
+        <img v-if="listings.view === 'Grid'" class="switchClick" src="../assets/icons/grid.svg" />
+        <img v-if="listings.view === 'List'"  v-on:click="changeView('Grid')" class="switchClick"  src="../assets/icons/gridx.svg" />
+        <img v-if="listings.view === 'List'" class="switchClick" src="../assets/icons/list.svg" />
+        <img v-if="listings.view === 'Grid'" v-on:click="changeView('List')" class="switchClick"  src="../assets/icons/listx.svg" />                    
+    </div>    
     <Listing/>
     <!-- <img alt="Vue logo" src="../assets/logo.png"> -->
     <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
   </div>
 </template>
 
-<script>
+<script lang="ts">
 // @ is an alias to /src
 // import HelloWorld from '@/components/HelloWorld.vue'
+import { Component, Vue } from 'vue-property-decorator';
 import Header from '@/components/MainPage/Header.vue'
 import FilterBox from '@/components/MainPage/FilterBox.vue'
 import Listing from '@/components/MainPage/Listing.vue'
+import { State, Action } from 'vuex-class'
+import { ViewState } from '../types/modules/listingsTypes'
+const namespace = 'listings'
 
-export default {
-  name: 'Home',
+@Component({
   components: {
-    // HelloWorld,
     Header,
     FilterBox,    
     Listing
   }
+})
+
+export default class Home extends Vue {
+    @State('listings') listings!: ViewState       
+    @Action('changeView', { namespace }) changeView!: () => void;  
 }
+
 </script>
 
 <style scoped>
 .home {
   display: flex;
-  flex-direction: column;  
+  flex-direction: column; 
+  margin: auto;
+    width: 1100px;  
 }
+.switchDisplay {    
+    display: flex;
+    margin: 73px 15px 22px auto;    
+}
+.switchClick {
+    margin-left: 5px;
+}
+    .switchClick:hover {
+        cursor: pointer;
+    }
 </style>

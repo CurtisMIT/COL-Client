@@ -111,11 +111,12 @@ export default class Graph extends Vue {
         // add tooltip
         const tooltip = d3.select("#areaCOL")
             .append("div")
-            .style("opacity", 1)
+            .style("opacity", 1)            
             .attr("class", "tooltip")
             .style("color", "#2A2C50")            
             .style("text-align", "left") 
-            .style("margin", "auto")            
+            .style("margin", "auto")                              
+                           
                                  
 
         const mouseover = function(d) {
@@ -212,7 +213,5 @@ export default class Graph extends Vue {
     height: 282px;    
 }
 
-.myCircle:hover {
-  stroke: black;
-}
+
 </style>

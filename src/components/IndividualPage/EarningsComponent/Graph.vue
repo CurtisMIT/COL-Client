@@ -1,5 +1,5 @@
 <template>
-    <div class="mainGraph">
+    <div class="mainGraph" id="mainGraph">
         <div class="headerGraph">Growth in Earnings/Career Throughout the Years</div>
         <div class="displayGraph" id="earningsDisplay">            
         </div>
@@ -130,19 +130,58 @@ export default class Graph extends Vue {
             .transition().duration(1500)
             .attr("d", finalline)
 
+        // add tooltip
+        const tooltip = d3.select("#earningsDisplay")
+            .append("div")
+            .style("opacity", 1)
+            .attr("id", "tooltip")
+            .style("color", "#2A2C50")            
+            .style("text-align", "center") 
+            .style("margin", "auto")  
+            .style('font-size', '12px')        
+                                                                                   
+
+        const mouseover = function(d) {
+            tooltip            
+            .html(
+              `${d.title}
+                <br/>
+                $ ${d.salary}
+                `
+            )              
+            .style("opacity", 1)
+            .style("left", (d3.event.pageX + "px"))
+            .style("top", (d3.event.pageY + "px"))
+        }
+          
+        // A function that change this tooltip when the leaves a point: just need to set opacity to 0 again
+        const mouseleave = function(d) {
+            tooltip
+            .transition()
+            .duration(200)
+            .style("opacity", 0)
+        }
+
         // add dots
-        svg.selectAll("dot")
+        svg.append('g')
+            .selectAll('dot')
             .data(this.career)            
             .enter()
             .append("circle")
                 .attr("cx", 0)
-                .attr("cy", height)
-                 .attr("class", "myCircle")
-                .transition().duration(1500)
+                .attr("cy", height)                
+                .transition()
+                .duration(1500) 
                 .attr("cx", function(d: any){return x(d.year)})
                 .attr("cy", function(d: any){return y(d.salary)})
-                .attr("r", 3)                
+                .attr("r", 3.5)                
                 .attr("fill", "#24CF9A")  
+                .on('end', function() {
+                    d3.select(this)
+                    .on("mouseover", mouseover )                    
+                    .on("mouseleave", mouseleave )
+                })
+                
 
                 
     }
@@ -166,9 +205,10 @@ export default class Graph extends Vue {
 }
 
 .displayGraph {
-    margin: auto;
-    width: 447px;
-    height: 282px;    
+    display: flex;
+    flex-direction:column;
+    margin: 28px auto;
+    width: 447px;;    
 }
 
 
