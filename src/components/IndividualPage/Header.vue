@@ -2,24 +2,20 @@
     <div class="main">
         <div class="content">
             <div class="titleHeader">
-                Sr. Product Designer
+                {{basic.title}}
                 <span class="dot">·</span>
-                <span class="years"> 5 years</span>
-                <span class="submitDate">Submitted on May 2020</span>
+                <span class="years"> {{basic.experience}} years</span>
+                <span class="submitDate">Submitted on {{basic.date}}</span>
             </div>
             <div class="tagsHeader">
-                <div class="tag">🏠  San Francisco</div>
-                <div class="tag">💼  Finance</div>
+                <div class="tag">🏠  {{basic.location}}</div>
+                <div class="tag">💼  {{basic.industry}}</div>
             </div>
-            <div class="textHeader">
-                “Party all day and night, money straight from 
-                stock market. Living lavishly and following a 
-                keto diet cuz gains.”
-            </div>
+            <div class="textHeader"> {{basic.quote}} </div>
             <div class="tagsHeader">
-                <div class="tag2" style="backgroundColor: #FAE0D4">✈️  Traveler</div>
-                <div class="tag2" style="backgroundColor: #D8E7E2">🥘  Foodie</div>
-                <div class="tag2" style="backgroundColor: #F5D5E5">🍸️  Party Animal</div>
+                <div class="tag2" style="backgroundColor: #FAE0D4">✈️  {{basic.tag[0]}}</div>
+                <div class="tag2" style="backgroundColor: #D8E7E2">🥘  {{basic.tag[1]}}</div>
+                <div class="tag2" style="backgroundColor: #F5D5E5">🍸️ {{basic.tag[2]}}</div>
             </div>
         </div>
     </div>
@@ -27,9 +23,15 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import { Getter } from 'vuex-class'
+import { IndividualState } from '../../types/modules/individualTypes'
+const namespace = 'individual'
 
 @Component
 export default class Header extends Vue { 
+    // @State('individual') individual!: IndividualState
+    // use getter, no need to pull all state info
+    @Getter('getBasic', { namespace }) basic!: IndividualState   
 }
 
 </script>
@@ -37,7 +39,7 @@ export default class Header extends Vue {
 <style scoped>
 .main {
     display: flex;
-    flex-direction: column;    
+    flex-direction: column;        
 }
 .content {
     width: 1055px;

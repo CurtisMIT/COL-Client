@@ -7,22 +7,22 @@
             </div>
             <div class="dividerTable"></div>
             <div class="costEntries">
-                <div v-for='d in data' :key="d.category" class="costDiv">
+                <div v-for='item in tableItems' :key="item.description" class="costDiv">
                     <div class="costEntry">
-                        <div class="costItem">{{d.category}}</div>
-                        <div class="costAmount">{{d.cost}}</div>
-                        <img v-if="!d.isOpen" v-on:click="d.isOpen=!d.isOpen" class="costToggle" src="../../../assets/icons/arrow.svg"/>
-                        <img v-else v-on:click="d.isOpen=!d.isOpen" class="costToggle" style=" transform: rotate(180deg);" src="../../../assets/icons/arrow.svg"/>
+                        <div class="costItem"> {{item.category}} </div>
+                        <div class="costAmount"> {{item.amount}} </div>
+                        <img v-if="!isOpen" v-on:click="isOpen=!isOpen" class="costToggle" src="../../../assets/icons/arrow.svg"/>
+                        <img v-else v-on:click="isOpen=!isOpen" class="costToggle" style=" transform: rotate(180deg);" src="../../../assets/icons/arrow.svg"/>
                     </div>
-                    <div v-if="d.isOpen" class="costInfo">
-                        {{d.text}}
+                    <div v-if="isOpen" class="costInfo">
+                        {{item.information}}
                     </div>
                     <div class="costDivider"></div>
                 </div>
             </div>
             <div class="costTotal">
                 <div class="costTotalTitle">
-                    Total <span class="costTotalAmount">$600</span>
+                    Total <span class="costTotalAmount">$ {{totalAmount}}</span>
                 </div>
                 <div class="costTotalDivider"></div>                    
             </div>
@@ -33,22 +33,19 @@
 
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, Prop } from 'vue-property-decorator';
+import { TableList } from '../../../types/modules/individualTypes'
 // just need to plug some data and it'll be gucci to go
 
 @Component
 export default class Table extends Vue { 
-    data () {
-        return {
-            text: false,
-            data: [
-             {category: 'Current Earnings', cost: 1200, text: 'Salary was on an hourly basis  etc etc etc etc', isOpen: false},
-             {category: 'Rent', cost: 600, text: 'Salary was on an hourly basis  etc etc etc etc', isOpen: false},
-             {category: 'Food', cost: 200, text: 'Salary was on an hourly basis  etc etc etc etc', isOpen: false},   
-             {category: 'Entertainment', cost: 1000, text: 'Salary was on an hourly basis  etc etc etc etc', isOpen: false},   
-            ]
-        }
-    }
+
+
+    @Prop() tableItems!: Array<TableList>
+    @Prop() totalAmount!: number
+    @Prop({default: false}) isOpen!: boolean
+        
+    // do something to add isOpen to each individual ones
 }
 
 </script>

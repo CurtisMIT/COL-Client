@@ -8,7 +8,8 @@
 
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, Prop } from 'vue-property-decorator';
+import { IndividualState, Growth } from '../../../types/modules/individualTypes'
 import * as d3 from 'd3'
 
 const margin = {top: 10, right: 30, bottom: 30, left: 50}
@@ -21,16 +22,14 @@ const height = 282 - margin.top - margin.bottom
 @Component
 export default class Graph extends Vue { 
     
-    private career: Array<{year: any; salary: any; title: string}> = [
-        {year: 0, salary: 37000, title: 'junior'},
-        {year: 1, salary: 37000, title: 'junior'},
-        {year: 2, salary: 45000, title: 'Sr.Manager'},
-        {year: 3, salary: 49000, title: 'VP'},
-        {year: 4, salary: 52000, title: 'CEO'},
-        {year: 5, salary: 65000, title: 'Chairman'}        
-    ]  
+    // eslint-disable-next-line
+    @Prop() growth!: IndividualState | any
+    @Prop() growthMax!: number[]
     
     mounted() {
+        const maxYear = this.growthMax[0]
+        const maxSalary = this.growthMax[1]        
+
         const svg = d3.select("#earningsDisplay")
             .append('svg')
             .attr('width', width + margin.left + margin.right)
@@ -59,15 +58,15 @@ export default class Graph extends Vue {
         .attr("stop-color", "#24CF9A")
         .attr("stop-opacity", 0)
         
-        // x val
+        // x val          
         const x = d3.scaleLinear()            
             .range([0, width])
-            .domain([0, this.career[this.career.length-1].year])                                                
+            .domain([0, maxYear])                                                
         const xAxis = svg.append('g')
             .attr("transform", "translate(0," + height + ")")                                                                        
             .call(d3.axisBottom(x)                
                 .tickPadding(10)
-                .ticks(this.career.length)
+                .ticks(5)
                 .tickSize(0)                            
             )                      
             xAxis.selectAll("path")
@@ -78,13 +77,13 @@ export default class Graph extends Vue {
 
         // y val
         const y = d3.scaleLinear()
-            .domain([0, this.career[this.career.length-1].salary])
+            .domain([0, maxSalary])
             .range([height, 0])            
         const yAxis = svg.append('g')
             // .attr("stroke-dasharray", "0,1")                
             .call(d3.axisLeft(y)
                 .tickPadding(10)
-                .ticks(this.career.length)
+                .ticks(5)
                 .tickSize(0)                
             )                     
             yAxis.selectAll('path')
@@ -93,20 +92,21 @@ export default class Graph extends Vue {
                 .style("stroke", '#2A2C50')
                 .style("stroke-width", '0.1')            
         
-        // initial area y = 0:
-        const initialarea: any = d3.area()
+        // initial area y = 0:        
+        const initialarea = d3.area()
             .x(0)
             .y0(height)
-            .y1(height);        
+            .y1(height);     
+        
         // the area in its final state
-        const area: any = d3.area()
-            .x(function(d: any) { return x(d.year) })
+        const area = d3.area<{year: number; salary: number}>()
+            .x(function(d) { return x(d.year) })
             .y0(height)
-            .y1(function(d: any) { return y(d.salary) });  
+            .y1(function(d) { return y(d.salary) })  
 
-        // fill area
+    //     // fill area
         svg.append('path')
-            .datum(this.career)
+            .datum(this.growth)
             .attr("fill", "url(#svgGradient)")                                    
             .attr("class", "area")
             .attr("d", initialarea) // initial state (line at the bottom)
@@ -114,15 +114,15 @@ export default class Graph extends Vue {
             .attr("d", area); // final state
         
         // add line    
-        const initline: any = d3.line()
+        const initline = d3.line()
             .x(0)
-            .y(height)                
-        const finalline: any = d3.line()  
-            .x(function(d: any){return x(d.year)})                
-            .y(function(d: any){return y(d.salary)})  
+            .y(height)                     
+        const finalline = d3.line<{year: number; salary: number}>()  
+            .x(function(d){return x(d.year)})                
+            .y(function(d){return y(d.salary)})  
 
         svg.append('path')
-            .datum(this.career)
+            .datum(this.growth)
             .attr("fill", "none")
             .attr("stroke", "#24CF9A")
             .attr("stroke-width", 1)
@@ -130,7 +130,7 @@ export default class Graph extends Vue {
             .transition().duration(1500)
             .attr("d", finalline)
 
-        // add tooltip
+    //     // add tooltip
         const tooltip = d3.select("#earningsDisplay")
             .append("div")
             .style("opacity", 1)
@@ -140,8 +140,8 @@ export default class Graph extends Vue {
             .style("margin", "auto")  
             .style('font-size', '12px')        
                                                                                    
-
-        const mouseover = function(d) {
+        // eslint-disable-next-line
+        const mouseover: any = function(d: Growth) {
             tooltip            
             .html(
               `${d.title}
@@ -153,26 +153,29 @@ export default class Graph extends Vue {
             .style("left", (d3.event.pageX + "px"))
             .style("top", (d3.event.pageY + "px"))
         }
+        
           
-        // A function that change this tooltip when the leaves a point: just need to set opacity to 0 again
-        const mouseleave = function(d) {
+    //     // A function that change this tooltip when the leaves a point: just need to set opacity to 0 again
+        const mouseleave = function() {
             tooltip
             .transition()
             .duration(200)
             .style("opacity", 0)
         }
 
-        // add dots
+    //     // add dots
         svg.append('g')
             .selectAll('dot')
-            .data(this.career)            
+            .data(this.growth)            
             .enter()
             .append("circle")
                 .attr("cx", 0)
                 .attr("cy", height)                
                 .transition()
                 .duration(1500) 
+                // eslint-disable-next-line
                 .attr("cx", function(d: any){return x(d.year)})
+                // eslint-disable-next-line
                 .attr("cy", function(d: any){return y(d.salary)})
                 .attr("r", 3.5)                
                 .attr("fill", "#24CF9A")  

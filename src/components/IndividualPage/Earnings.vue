@@ -4,8 +4,14 @@
             <div class="headerEarnings">Earnings</div>
             <div class="divider"></div>
             <div class="tablesEarnings">
-                <Table/>
-                <Graph/>
+                <Table 
+                    :tableItems="earnings"
+                    :totalAmount="totalEarnings"
+                    />
+                <Graph 
+                    :growth="growth"
+                    :growthMax="growthMax"
+                    />
             </div>
             
         </div>
@@ -18,6 +24,9 @@
 import { Component, Vue } from 'vue-property-decorator';
 import Table from './EarningsComponent/Table.vue'
 import Graph from './EarningsComponent/Graph.vue'
+import { Getter } from 'vuex-class'
+import { IndividualState } from '../../types/modules/individualTypes'
+const namespace = 'individual'
 
 @Component({
     components: {
@@ -26,6 +35,12 @@ import Graph from './EarningsComponent/Graph.vue'
     }
 })
 export default class Earnings extends Vue { 
+    @Getter('getEarnings', { namespace }) earnings!: IndividualState 
+    @Getter('getTotalEarnings', { namespace }) totalEarnings!: number
+    @Getter('getGrowth', { namespace }) growth!: IndividualState    
+    @Getter('getGrowthMax', { namespace }) growthMax!: IndividualState    
+
+    
 }
 
 </script>

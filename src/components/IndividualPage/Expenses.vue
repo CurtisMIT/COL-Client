@@ -4,7 +4,9 @@
             <div class="headerEarnings">Expenses</div>
             <div class="divider"></div>
             <div class="tablesEarnings">
-                <Table/>    
+                <Table
+                    :tableItems="expenses"
+                    :totalAmount="totalExpenses"/>    
                 <Pie/>            
             </div>
             
@@ -18,16 +20,21 @@
 import { Component, Vue } from 'vue-property-decorator';
 import Table from './EarningsComponent/Table.vue'
 import Pie from './ExpensesComponent/Pie.vue'
+import { Getter } from 'vuex-class'
+import { IndividualState } from '../../types/modules/individualTypes'
+const namespace = 'individual'
 
 
 @Component({
     components: {
         Table,
-        Pie
+        // Pie
         
     }
 })
 export default class Expenses extends Vue { 
+    @Getter('getExpenses', { namespace}) expenses!: IndividualState
+    @Getter('getTotalExpenses', { namespace }) totalExpenses!: number
 }
 
 </script>

@@ -1,4 +1,5 @@
 export interface Basic {
+    date: string,
     title: string,
     experience: number,
     location: string,
@@ -7,10 +8,10 @@ export interface Basic {
     tag: Array<String>
 }
 
-export interface Earnings { 
-    description: string,
+export interface TableList {
+    category: string,
     amount: number,
-    information?: string
+    information?: string  
 }
 
 export interface Growth {
@@ -19,11 +20,6 @@ export interface Growth {
     year: number,        
 }
 
-export interface Expenses {
-    description: string,
-    amount: number,
-    information?: string    
-}
 
 export interface MarketSalary {
     title: string
@@ -40,11 +36,10 @@ export interface MarketCOL {
 
 export interface IndividualState {
     basic?: Basic | object
-    earnings: Array<Earnings>
+    earnings: Array<TableList>
     growth: Array<Growth>
-    expenses: Array<Expenses>
+    expenses: Array<TableList>
     marketSalary: Array<MarketSalary>
     marketCOL: Array<MarketCOL>
-    location: string
-    date: string
+    location: string,        
 }

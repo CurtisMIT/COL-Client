@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex, { StoreOptions } from 'vuex'
 import { RootState } from '../types/index'
 import { listings } from './modules/listings'
+import { individual } from './modules/individual'
 
 Vue.use(Vuex)
 
@@ -14,7 +15,8 @@ const store: StoreOptions<RootState> = {
   actions: {
   },
   modules: {
-    listings
+    listings,
+    individual
   }
 }
 

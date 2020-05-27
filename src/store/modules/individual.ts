@@ -3,11 +3,11 @@ import { IndividualState } from '../../types/modules/individualTypes'
 import { RootState } from '../../types' 
 
 const state: IndividualState  = {
-    basic: {title: 'Sr. Product Designer', experience: 5, location: 'San Francisco', industry: 'Finance', quote: 'Party all day and night cuz of keto diet cuz gains, makes no sense.', tag: ['Traveler', 'Foodie', 'Party Animal']},
+    basic: {date: 'May 2020', title: 'Sr. Product Designer', experience: 5, location: 'San Francisco', industry: 'Finance', quote: 'Party all day and night cuz of keto diet cuz gains, makes no sense.', tag: ['Traveler', 'Foodie', 'Party Animal']},
     earnings: [
-        {description: 'Base', amount: 24500, information: 'it was pretty shitty'},
-        {description: 'Relocation', amount: 9000},
-        {description: 'Bonus', amount: 25000, information: 'it was pretty shitty'},        
+        {category: 'Base', amount: 24500, information: 'it was pretty shitty'},
+        {category: 'Relocation', amount: 9000},
+        {category: 'Bonus', amount: 25000, information: 'it was pretty shitty'},        
     ],
     growth: [
         {title: 'Jr. PD',salary: 24500, year: 0},
@@ -18,10 +18,10 @@ const state: IndividualState  = {
         {title: 'Sr. Product Designer',salary: 65000, year: 5},        
     ],
     expenses: [
-        {description: 'Rent', amount: 3500, information: 'it was pretty shitty'},
-        {description: 'Food', amount: 3000},
-        {description: 'Entertainment', amount: 1000, information: 'it was pretty shitty'},                
-        {description: 'Travel', amount: 2000, information: 'it was pretty shitty'},                
+        {category: 'Rent', amount: 3500, information: 'it was pretty shitty'},
+        {category: 'Food', amount: 3000},
+        {category: 'Entertainment', amount: 1000, information: 'it was pretty shitty'},                
+        {category: 'Travel', amount: 2000, information: 'it was pretty shitty'},                
     ],
     marketSalary: [
         {title: 'Freelance PD', salary: 65000, year: 8},
@@ -58,10 +58,46 @@ const state: IndividualState  = {
         {title: 'Product Designer', col: 44000, year: 4.5},        
     ],
     location: 'San Francisco',
-    date: 'May 2020'
+    
 
 }
-const getters: GetterTree<IndividualState, RootState> = {}
+const getters: GetterTree<IndividualState, RootState> = {
+    getBasic(state){        
+        return state.basic
+    },
+    getEarnings(state) {
+        return state.earnings
+    },
+    getTotalEarnings(state) {
+        let sum = 0, entry        
+        for (entry of state.earnings) {
+            sum += entry.amount
+        }
+        return sum
+    },
+    getGrowth(state){
+        return state.growth
+    },
+    getGrowthMax(state){
+        let maxSalary = 0, maxYear = 0, entry
+        for (entry of state.growth) {
+            maxSalary = Math.max(entry.salary, maxSalary)
+            maxYear = Math.max(entry.year, maxYear)
+        }
+        return [maxYear, maxSalary]
+    },
+    getExpenses(state) {
+        return state.expenses
+    },
+    getTotalExpenses(state) {
+        let sum = 0, entry        
+        for (entry of state.expenses) {
+            sum += entry.amount
+        }
+        return sum
+    }
+    
+}
 const mutations: MutationTree<IndividualState> = {}
 const actions: ActionTree<IndividualState, RootState> = {}
 
