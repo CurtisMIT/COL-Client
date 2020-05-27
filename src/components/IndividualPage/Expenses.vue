@@ -7,7 +7,10 @@
                 <Table
                     :tableItems="expenses"
                     :totalAmount="totalExpenses"/>    
-                <Pie/>            
+                <Pie
+                    :tableItems="expenses"
+                    :totalAmount="totalExpenses"
+                />            
             </div>
             
         </div>
@@ -28,7 +31,7 @@ const namespace = 'individual'
 @Component({
     components: {
         Table,
-        // Pie
+        Pie
         
     }
 })

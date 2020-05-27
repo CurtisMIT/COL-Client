@@ -4,8 +4,14 @@
             <div class="headerEarnings">Market in X Area</div>
             <div class="divider"></div>
             <div class="tablesEarnings">                
-                <Graph/>       
-                <COLGraph/>         
+                <Graph
+                    :marketSalary="marketSalary"
+                    :marketSalaryMax="marketSalaryMax"
+                />       
+                <COLGraph
+                    :marketCOL="marketCOL"
+                    :marketCOLMax="marketCOLMax"
+                />         
             </div>
             
         </div>
@@ -15,9 +21,12 @@
 
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import Graph from './MarketComponent/EarningsGraph.vue'
+import { Component, Vue } from 'vue-property-decorator'
+import Graph from './MarketComponent/SalaryGraph.vue'
 import COLGraph from './MarketComponent/COLGraph.vue'
+import { Getter } from 'vuex-class'
+import { IndividualState } from '../../types/modules/individualTypes'
+const namespace = 'individual'
 
 @Component({
     components: {        
@@ -26,6 +35,10 @@ import COLGraph from './MarketComponent/COLGraph.vue'
     }
 })
 export default class Expenses extends Vue { 
+    @Getter('getMarketSalary', { namespace }) marketSalary!: IndividualState
+    @Getter('getMaxMarketSalary', { namespace }) marketSalaryMax!: IndividualState
+    @Getter('getMarketCOL', { namespace }) marketCOL!: IndividualState
+    @Getter('getMaxMarketCOL', { namespace }) marketCOLMax!: IndividualState
 }
 
 </script>

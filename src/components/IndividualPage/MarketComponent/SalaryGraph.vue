@@ -1,14 +1,14 @@
 <template>
     <div class="mainGraph">
-        <div class="headerGraph">Cost of living in X Area</div>
-        <div class="displayGraph" id="areaCOL">            
+        <div class="headerGraph">Salary in X Area</div>
+        <div class="displayGraph" id="areaEarnings">            
         </div>
     </div>
 </template>
 
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator'
+import { Component, Vue, Prop } from 'vue-property-decorator';
 import { IndividualState } from '../../../types/modules/individualTypes'
 import * as d3 from 'd3'
 
@@ -19,13 +19,14 @@ const height = 282 - margin.top - margin.bottom
 @Component
 export default class Graph extends Vue { 
     // eslint-disable-next-line
-    @Prop() marketCOL!: IndividualState | any
-    @Prop() marketCOLMax!: number[]
+    @Prop() marketSalary!: IndividualState | any
+    @Prop() marketSalaryMax!: number[]
+    
     mounted() {
-        const maxYear = this.marketCOLMax[0]
-        const maxCOL = this.marketCOLMax[1]
+        const maxYear = this.marketSalaryMax[0]
+        const maxSalary = this.marketSalaryMax[1]
 
-        const svg = d3.select("#areaCOL")
+        const svg = d3.select("#areaEarnings")
             .append('svg')
             .attr('width', width + margin.left + margin.right)
             .attr('height', height + margin.top + margin.bottom)
@@ -54,7 +55,7 @@ export default class Graph extends Vue {
 
         // y val
         const y = d3.scaleLinear()
-            .domain([0, maxCOL])
+            .domain([0, maxSalary])
             .range([height, 0])            
         const yAxis = svg.append('g')
             // .attr("stroke-dasharray", "0,1")                
@@ -67,60 +68,59 @@ export default class Graph extends Vue {
                 .style('stroke', '#F8F8FB')
             yAxis.selectAll('text')
                 .style("stroke", '#2A2C50')
-                .style("stroke-width", '0.1')   
-                
+                .style("stroke-width", '0.1')            
         // add tooltip
-        const tooltip = d3.select("#areaCOL")
+        const tooltip = d3.select("#areaEarnings")
             .append("div")
-            .style("opacity", 1)            
+            .style("opacity", 1)
             .attr("class", "tooltip")
             .style("color", "#2A2C50")            
             .style("text-align", "left") 
-            .style("margin", "auto")                          
-                                                       
+            .style("margin", "auto")            
+                                
         const mouseover = function() {
             tooltip
             .style("opacity", 0)            
             .transition()
-            .duration(1000)
+            .duration(1000)                
             .style("opacity", 1)
         }
         // eslint-disable-next-line
         const mousemove = function(d: any) {
-            tooltip            
+            tooltip
             .html(
                 `💼: ${d.title} 
                 <br/>
                 ⌛: ${d.year} years 
                 <br/>
-                💸: ${d.col}`
+                💰: ${d.salary}`
             )            
-        }          
-        
+        }   
+           
         // Add dots
         svg.append('g')        
             .selectAll("dot")
-            .data(this.marketCOL)
+            .data(this.marketSalary)
             .enter()            
-            .append("circle")   
-            // eslint-disable-next-line             
+            .append("circle")    
+            // eslint-disable-next-line        
             .attr("cx", function(d: any) {return x(d.year)})
-            // eslint-disable-next-line    
-            .attr("cy", function (d: any) { return y(d.col)} )                    
+            // eslint-disable-next-line
+            .attr("cy", function (d: any) { return y(d.salary)} )                    
             .attr("r", 3.5)
             .style("fill", "#24CF9A")
             .on("mouseover", mouseover )
-            .on("mousemove", mousemove )
-            
+            .on("mousemove", mousemove )         
 
-        // new X axis
+        // new X axis               
         x.domain([0, maxYear])
         x.range([0, width])   
         xAxis
             .transition()
             .duration(2000)
             .attr("opacity", "1")
-            .call(d3.axisBottom(x)
+            .attr("transform", "translate(0," + height + ")")                                                                        
+            .call(d3.axisBottom(x)                
                 .tickPadding(10)
                 .ticks(5)
                 .tickSize(0) 
@@ -130,18 +130,10 @@ export default class Graph extends Vue {
             .transition()
             .delay(function(d,i){return(i*100)})
             .duration(2000)
-            // eslint-disable-next-line    
-            .attr("cx", function (d: any) { return x(d.year); } )
-            // eslint-disable-next-line    
-            .attr("cy", function (d: any) { return y(d.col); } ) 
-            .on('end', function() {
-                d3.select(this)
-                .on("mouseover", mouseover )                    
-                .on("mousemove", mousemove )
-            })            
-            
-            
-
+            // eslint-disable-next-line
+            .attr("cx", function (d: any) { return x(d.year) })
+            // eslint-disable-next-line
+            .attr("cy", function (d: any) { return y(d.salary) })                
     }
 }
 
@@ -163,18 +155,14 @@ export default class Graph extends Vue {
     font-weight: bold;    
 }
 
-.displayGraph {    
+.displayGraph {
     display: flex;
     flex-direction:column;
     margin: 28px auto;
-    width: 447px;
-
-}
-.displayPosition {
-    margin: auto;
-    width: 447px;
-    height: 282px;    
+    width: 447px;  
 }
 
-
+.myCircle:hover {
+  stroke: black;
+}
 </style>

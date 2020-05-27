@@ -59,7 +59,7 @@ export default class Graph extends Vue {
         .attr("stop-opacity", 0)
         
         // x val          
-        const x = d3.scaleLinear()            
+        const x = d3.scaleLinear()        
             .range([0, width])
             .domain([0, maxYear])                                                
         const xAxis = svg.append('g')
@@ -104,7 +104,7 @@ export default class Graph extends Vue {
             .y0(height)
             .y1(function(d) { return y(d.salary) })  
 
-    //     // fill area
+        // fill area
         svg.append('path')
             .datum(this.growth)
             .attr("fill", "url(#svgGradient)")                                    
@@ -130,7 +130,7 @@ export default class Graph extends Vue {
             .transition().duration(1500)
             .attr("d", finalline)
 
-    //     // add tooltip
+        // add tooltip
         const tooltip = d3.select("#earningsDisplay")
             .append("div")
             .style("opacity", 1)
@@ -138,32 +138,31 @@ export default class Graph extends Vue {
             .style("color", "#2A2C50")            
             .style("text-align", "center") 
             .style("margin", "auto")  
-            .style('font-size', '12px')        
+            .style('font-size', '12px')    
+            .style('position', 'absolute')     
                                                                                    
         // eslint-disable-next-line
         const mouseover: any = function(d: Growth) {
-            tooltip            
+            tooltip    
+            .style("opacity", 0)            
+            .transition()
+            .duration(1000)
+            .style("opacity", 1)                    
+        }
+        // eslint-disable-next-line
+        const mousemove = function(d: any) {
+            tooltip
             .html(
               `${d.title}
                 <br/>
                 $ ${d.salary}
                 `
-            )              
-            .style("opacity", 1)
+            )                          
             .style("left", (d3.event.pageX + "px"))
-            .style("top", (d3.event.pageY + "px"))
-        }
-        
-          
-    //     // A function that change this tooltip when the leaves a point: just need to set opacity to 0 again
-        const mouseleave = function() {
-            tooltip
-            .transition()
-            .duration(200)
-            .style("opacity", 0)
+            .style("top", (d3.event.pageY+5 + "px"))
         }
 
-    //     // add dots
+        // add dots
         svg.append('g')
             .selectAll('dot')
             .data(this.growth)            
@@ -182,7 +181,7 @@ export default class Graph extends Vue {
                 .on('end', function() {
                     d3.select(this)
                     .on("mouseover", mouseover )                    
-                    .on("mouseleave", mouseleave )
+                    .on("mousemove", mousemove )
                 })
                 
 

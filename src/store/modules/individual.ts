@@ -95,9 +95,31 @@ const getters: GetterTree<IndividualState, RootState> = {
             sum += entry.amount
         }
         return sum
-    }
-    
+    }, 
+    getMarketSalary(state) {
+        return state.marketSalary
+    },
+    getMaxMarketSalary(state) {
+        let maxSalary = 0, maxYear = 0, entry
+        for (entry of state.marketSalary) {
+            maxSalary = Math.max(entry.salary, maxSalary)
+            maxYear = Math.max(entry.year, maxYear)
+        }
+        return [maxYear, maxSalary]        
+    },
+    getMarketCOL(state) {
+        return state.marketCOL
+    },
+    getMaxMarketCOL(state) {
+        let maxCOL = 0, maxYear = 0, entry
+        for (entry of state.marketCOL) {
+            maxCOL = Math.max(entry.col, maxCOL)
+            maxYear = Math.max(entry.year, maxYear)
+        }
+        return [maxYear, maxCOL]        
+    },        
 }
+
 const mutations: MutationTree<IndividualState> = {}
 const actions: ActionTree<IndividualState, RootState> = {}
 

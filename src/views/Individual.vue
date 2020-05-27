@@ -3,9 +3,9 @@
     <Header/>
     <Earnings/>    
     <Expenses/>
-    <!-- <Market/> -->
-    <!-- <div class="otherSubmission">Other Submissions in X Area</div> -->
-    <!-- <Listing/> -->
+    <Market/>
+    <div class="otherSubmission">Other Submissions in X Area</div>
+    <Listing/>
   </div>
 </template>
 
@@ -23,8 +23,8 @@ export default {
     Header,
     Earnings,
     Expenses,
-    // Market,
-    // Listing
+    Market,
+    Listing
   }
 }
 </script>
