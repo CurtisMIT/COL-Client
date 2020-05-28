@@ -1,26 +1,28 @@
 <template>
     <div class="mainGrid">
         <div class="outlineGrid" v-for="entry in listings.entries" :key="entry.id">
-            <div class="contentGrid">
-                <div class="headGrid">
-                    <div class="titleGrid">{{entry.job}}</div>                    
-                    <div class="experienceGrid">Experience: <span style="fontWeight: 500">{{entry.experience}}</span></div>                    
-                </div>          
-                <div class="careerGrid">
-                    <div class="careerSub">🏠 {{entry.location}}</div>                
-                    <div class="careerSub">💼 {{entry.industry}}</div>                
-                </div>      
-                <div class="moneySct">                    
-                    <div class="moneyGrid">Earnings: <span style="fontWeight: 500">{{entry.earnings}}</span></div>                    
-                    <div class="moneyGrid">Expenses: <span style="fontWeight: 500">{{entry.expenses}}</span></div>
-                </div>       
-                <div class="textGrid">“{{entry.quote}}“</div>         
-                <div class="tagsGrid">
-                    <div class="tag1">{{entry.tag1}}</div>
-                    <div class="tag2">{{entry.tag2}}</div>
-                </div>
-                <div class="dateGrid">{{entry.date}}</div>
-            </div>            
+            <router-link :to="`/individual/${entry.id}`" >
+                <div class="contentGrid">                
+                    <div class="headGrid">                    
+                        <div class="titleGrid">{{entry.job}}</div>                    
+                        <div class="experienceGrid">Experience: <span style="fontWeight: 500">{{entry.experience}}</span></div>                    
+                    </div>          
+                    <div class="careerGrid">
+                        <div class="careerSub">🏠 {{entry.location}}</div>                
+                        <div class="careerSub">💼 {{entry.industry}}</div>                
+                    </div>      
+                    <div class="moneySct">                    
+                        <div class="moneyGrid">Earnings: <span style="fontWeight: 500">{{entry.earnings}}</span></div>                    
+                        <div class="moneyGrid">Expenses: <span style="fontWeight: 500">{{entry.expenses}}</span></div>
+                    </div>       
+                    <div class="textGrid">“{{entry.quote}}“</div>         
+                    <div class="tagsGrid">
+                        <div class="tag1">{{entry.tag1}}</div>
+                        <div class="tag2">{{entry.tag2}}</div>
+                    </div>
+                    <div class="dateGrid">{{entry.date}}</div>                
+                </div>            
+            </router-link>
         </div>
     </div>
 </template>
@@ -37,6 +39,7 @@ export default class Grid extends Vue {
 </script>
 
 <style scoped>
+
 .mainGrid{
     margin: auto;    
     display: flex;        

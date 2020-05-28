@@ -12,7 +12,7 @@ Vue.use(VueRouter)
     component: Home
   },
   {
-    path: '/individual',
+    path: '/individual/:id',
     name: 'Individual',
     component: Individual
   },
@@ -27,6 +27,9 @@ Vue.use(VueRouter)
 ]
 
 const router = new VueRouter({
+  scrollBehavior() {
+    return { x: 0, y: 0 };
+  },
   routes
 })
 

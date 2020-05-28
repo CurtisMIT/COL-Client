@@ -17,7 +17,10 @@
   color: #2c3e50;
   
 }
-
+a {
+  color: #2c3e50;
+  text-decoration: none;
+}
 body {
   margin: 0
 }

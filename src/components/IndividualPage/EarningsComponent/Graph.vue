@@ -182,10 +182,7 @@ export default class Graph extends Vue {
                     d3.select(this)
                     .on("mouseover", mouseover )                    
                     .on("mousemove", mousemove )
-                })
-                
-
-                
+                })                                
     }
 }
 
