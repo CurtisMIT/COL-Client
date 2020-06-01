@@ -1,7 +1,7 @@
 export interface Entries {
     id: number;
-    job: string;
-    experience: string;
+    title: string;
+    experience: number;
     location: string;
     industry: string;
     earnings: string;

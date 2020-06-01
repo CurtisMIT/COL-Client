@@ -1,6 +1,6 @@
 <template>
-    <div class="mainPie">        
-        <div class="displayPie" id="expensePie">            
+    <div class="pie-main">        
+        <div class="pie-display" id="expensePie">            
         </div>
     </div>
 </template>
@@ -142,14 +142,14 @@ export default class Pie extends Vue {
 </script>
 
 <style scoped>
-.mainPie {    
+.pie-main {    
     display: flex;    
     flex-direction: column;     
     color: #2A2C50;        
     width: 506px;
     height: 362px;        
 }
-.displayPie {    
+.pie-display {    
     display: flex;
     margin: 0px auto;
     width: 500px;  

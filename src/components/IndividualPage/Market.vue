@@ -1,9 +1,9 @@
 <template>
-    <div class="mainMarket">
-        <div class="content">
-            <div class="headerEarnings">Market in X Area</div>
+    <div class="container-main">
+        <div class="container-body">
+            <div class="container-header">Market in X Area</div>
             <div class="divider"></div>
-            <div class="tablesEarnings">                
+            <div class="container-elem">                
                 <Graph
                     :marketSalary="marketSalary"
                     :marketSalaryMax="marketSalaryMax"
@@ -44,19 +44,19 @@ export default class Expenses extends Vue {
 </script>
 
 <style scoped>
-.mainMarket {    
+.container-main {    
     display: flex;    
     flex-direction: column;    
     margin-top: 65px;        
     background-color:#F8F8FB
 }
-.content {
+.container-body {
     display: flex;
     flex-direction: column;
     margin: 85px auto;
     width: 1055px;        
 }
-.headerEarnings {  
+.container-header {  
     margin-right: auto;  
     font-size: 24px;    
     
@@ -67,9 +67,9 @@ export default class Expenses extends Vue {
     border: 1px solid #E9EAF8;
 
 }
-.tablesEarnings {
+.container-elem {
     display: flex;
     justify-content: space-between;        
-    margin-top: 45px;   
+    margin-top: 45px;       
 }
 </style>

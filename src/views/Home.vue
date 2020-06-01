@@ -45,7 +45,7 @@ export default class Home extends Vue {
   display: flex;
   flex-direction: column; 
   margin: auto;
-    width: 1100px;  
+  width: 1100px;  
 }
 .switchDisplay {    
     display: flex;

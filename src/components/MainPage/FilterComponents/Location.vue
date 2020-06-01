@@ -1,6 +1,6 @@
 <template>
-    <div class="mainLocation">
-        <div class="title">
+    <div class="input-main-location">
+        <div class="input-title-location">
             Location
         </div>
         <div class="inputLocation"></div>
@@ -17,7 +17,7 @@ export default class Location extends Vue {
 </script>
 
 <style scoped>
-.mainLocation {
+.input-main-location {
     display: flex;
     flex-direction: column;
     padding-top: 29px;
@@ -25,7 +25,7 @@ export default class Location extends Vue {
     width: 384px; 
     
 }
-.title {    
+.input-title-location {    
     margin: auto auto 12px 0px;
     font-size: 18px;
     font-weight: bold;

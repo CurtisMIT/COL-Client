@@ -1,7 +1,7 @@
 <template>
-    <div class="mainGraph">
-        <div class="headerGraph">Cost of living in X Area</div>
-        <div class="displayGraph" id="areaCOL">            
+    <div class="graph-main">
+        <div class="graph-header">Cost of living in X Area</div>
+        <div class="graph-display" id="areaCOL">            
         </div>
     </div>
 </template>
@@ -149,32 +149,27 @@ export default class Graph extends Vue {
 </script>
 
 <style scoped>
-.mainGraph {    
+.graph-main {    
     display: flex;    
     flex-direction: column;     
     color: #2A2C50;        
     width: 506px;
-    height: 362px;    
+    height: 362px;       
 }
-.headerGraph {
+.graph-header {
     text-align: left;
     color: #2A2C50;
     font-size: 16px;
     font-weight: bold;    
 }
 
-.displayGraph {    
+.graph-display {    
     display: flex;
     flex-direction:column;
-    margin: 28px auto;
-    width: 447px;
+    margin: 28px auto auto 15px;
+    width: 447px;   
+}
 
-}
-.displayPosition {
-    margin: auto;
-    width: 447px;
-    height: 282px;    
-}
 
 
 </style>

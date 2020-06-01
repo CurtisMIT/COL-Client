@@ -1,11 +1,10 @@
 
 <template>
-    <div class="mainJob">
-        <div class="title">
+    <div class="input-main">
+        <div class="input-title">
             Job Title
-        </div>        
-        <!-- <div class="inputJob"></div>         -->
-        <div class="demo">          
+        </div>                
+        <div class="input-container">          
           <div class="autosuggest-container">
             <vue-autosuggest
               v-model="query"
@@ -52,7 +51,7 @@ import { VueAutosuggest }from "vue-autosuggest";
           id:'autosuggest__input',          
           placeholder: "Select a job title",                    
           style: {
-              height: '52px',
+              height: '50px',
               width: '328px',
               borderRadius: '10px',
               backgroundColor: '#ECECF2',
@@ -104,28 +103,21 @@ export default class Job extends Vue {
 </script>
 
 <style>
-.mainJob {
+.input-main {
     display: flex;
     flex-direction: column;
     padding-top: 29px;
     padding-left: 44px;   
     width: 384px;       
 }
-.title {    
+.input-title {    
     margin: auto auto 12px 0px;
     font-size: 18px;
     font-weight: bold;
     color: #2B2C50;
 }
-.inputJob {
-    height: 52px;
-    width: 328px;
-    background-color: #ECECF2;
-    border-radius: 10px;
-    
-}
 
-.demo { 
+.input-container { 
   font-family: 'Noto Sans', sans-serif;  
   width: 328px;
 }

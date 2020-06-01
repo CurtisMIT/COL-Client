@@ -1,6 +1,6 @@
 <template>
-    <div class="main">
-        <div class="heading">
+    <div class="header-main">
+        <div class="header-text">
             💸 Cost of living overview 
             with a personalized touch.
         </div>
@@ -9,19 +9,27 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+// import axios from 'axios'
 
 @Component
 export default class Header extends Vue {
-    // @Prop() private msg!: string;    
+    // @Prop() private msg!: string;   
+    // mounted() {
+        
+    //     axios
+    //         .get('http://localhost:3000/test')
+    //         .then(response => console.log(response))
+    //         .catch(error => console.log(error))
+    // } 
 }
 
 </script>
 
 <style scoped>
-.main {
+.header-main {
     display: flex;
 }
-.heading{
+.header-text{
     margin: auto;
     width: 450px;
     font-size: 35px;    

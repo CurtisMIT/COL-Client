@@ -1,5 +1,5 @@
 <template>
-    <div class="mainListing">
+    <div class="container-listing">
         <Grid v-if="listings.view === 'Grid'"/>
         <List v-if="listings.view === 'List'"/>
     </div>    
@@ -29,7 +29,7 @@ export default class Listing extends Vue {
 </script>
 
 <style scoped>
-.mainListing {
+.container-listing {
     display: flex;
     flex-direction: column;
     margin: auto;

@@ -1,9 +1,9 @@
 <template>
-    <div class="main">
-        <div class="content">
-            <div class="headerEarnings">Earnings</div>
+    <div class="container">
+        <div class="container-body">
+            <div class="container-title">Earnings</div>
             <div class="divider"></div>
-            <div class="tablesEarnings">
+            <div class="container-elem">
                 <Table 
                     :tableItems="earnings"
                     :totalAmount="totalEarnings"
@@ -46,18 +46,18 @@ export default class Earnings extends Vue {
 </script>
 
 <style scoped>
-.main {    
+.container {    
     display: flex;    
     flex-direction: column;    
     margin-top: 115px;        
 }
-.content {
+.container-body {
     display: flex;
     flex-direction: column;
     margin: auto;
     width: 1055px;        
 }
-.headerEarnings {  
+.container-title {  
     margin-right: auto;  
     font-size: 24px;    
     
@@ -69,7 +69,7 @@ export default class Earnings extends Vue {
     
 
 }
-.tablesEarnings {
+.container-elem {
     display: flex;
     justify-content: space-between;        
     margin-top: 45px;   

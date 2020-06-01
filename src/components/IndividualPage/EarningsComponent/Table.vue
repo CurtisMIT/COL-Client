@@ -1,32 +1,31 @@
 <template>
-    <div class="mainTable">
-        <div class="content">
-            <div class="headerTable">
-                <div class="description">Description</div>
-                <div class="amount">Amount</div>
+    <div class="table-main">
+        <div class="table-body">
+            <div class="table-header">
+                <div class="table-header-left">Description</div>
+                <div class="table-header-right">Amount</div>
             </div>
-            <div class="dividerTable"></div>
-            <div class="costEntries">
-                <div v-for='item in tableItems' :key="item.description" class="costDiv">
-                    <div class="costEntry">
-                        <div class="costItem"> {{item.category}} </div>
-                        <div class="costAmount"> {{item.amount}} </div>
-                        <img v-if="!isOpen" v-on:click="isOpen=!isOpen" class="costToggle" src="../../../assets/icons/arrow.svg"/>
-                        <img v-else v-on:click="isOpen=!isOpen" class="costToggle" style=" transform: rotate(180deg);" src="../../../assets/icons/arrow.svg"/>
+            <div class="table-divider"></div>
+            <div class="table-content">
+                <div v-for='item in tableItems' :key="item.description">
+                    <div class="table-elem">
+                        <div class="table-elem-name"> {{item.category}} </div>
+                        <div class="table-elem-amount"> {{item.amount}} </div>
+                        <img v-if="!isOpen" v-on:click="isOpen=!isOpen" class="table-elem-toggle" src="../../../assets/icons/arrow.svg"/>
+                        <img v-else v-on:click="isOpen=!isOpen" class="table-elem-toggle" style=" transform: rotate(180deg);" src="../../../assets/icons/arrow.svg"/>
                     </div>
-                    <div v-if="isOpen" class="costInfo">
+                    <div v-if="isOpen" class="table-elem-hidden">
                         {{item.information}}
                     </div>
-                    <div class="costDivider"></div>
+                    <div class="table-elem-faintline"></div>
                 </div>
             </div>
-            <div class="costTotal">
-                <div class="costTotalTitle">
-                    Total <span class="costTotalAmount">$ {{totalAmount}}</span>
+            <div class="table-total">
+                <div class="table-total-row">
+                    Total <span class="table-total-amount">$ {{totalAmount}}</span>
                 </div>
-                <div class="costTotalDivider"></div>                    
-            </div>
-            
+                <div class="table-total-divider"></div>                    
+            </div>            
         </div>
     </div>
 </template>
@@ -51,61 +50,61 @@ export default class Table extends Vue {
 </script>
 
 <style scoped>
-.mainTable {    
+.table-main {    
     display: flex;    
     flex-direction: column;            
     color: #2A2C50;     
                   
 }
-.content {
+.table-body {
     display: flex;
     flex-direction: column;    
     width: 458px;     
 }
-.headerTable {
+.table-header {
     display: flex;
     font-size: 16px;
     font-weight: bold;    
 }
-    .description {
+    .table-header-left {
         margin: auto auto auto 35px;
     }
-    .amount {
+    .table-header-right {
         margin-right: 55px;
     }
-.dividerTable {
+.table-divider {
     margin-top: 5px;
     border-top: 1px solid #2A2C50;
 }
-.costEntries {
+.table-content {
     max-height: 215px;    
     overflow-y: scroll;
     border-bottom: 1px solid #2A2C50;
 }
 
-.costEntry {
+.table-elem {
     display: flex;   
     font-size: 16px;   
     margin: 15px auto;  
 }
-    .costItem {
+    .table-elem-name {
         margin: auto auto auto 35px;
     }
-    .costAmount {
+    .table-elem-amount {
         margin-right: 21px;
     }
-    .costToggle {
+    .table-elem-toggle {
         margin-right: 20px;        
         transition: transform 500ms;
         
     }
-        .costToggle:focus {
+        .table-elem-toggle:focus {
             transform: rotate(180deg)
         }
-        .costToggle:hover {
+        .table-elem-toggle:hover {
             cursor: pointer;
         }
-.costInfo {
+.table-elem-hidden {
     max-height: 85px;
     width: 275px;
     overflow-y: scroll;
@@ -127,10 +126,10 @@ export default class Table extends Vue {
     }
 }
    
-.costDivider {
+.table-elem-faintline {
     border-top:1px solid #BFC1DA;
 }
-.costTotal {
+.table-total {
     display: flex;
     flex-direction: column;
     margin-top: 14px;
@@ -138,13 +137,13 @@ export default class Table extends Vue {
     margin: 14px 50px auto auto;
     border-bottom: 1px solid #2A2C50;
 }
-    .costTotalTitle {
+    .table-total-row {
         margin: auto 5px;
     }
-    .costTotalAmount {
+    .table-total-amount {
         margin-left: 35px;
     }
-    .costTotalDivider {      
+    .table-total-divider {      
         margin-top: 5px;
         margin-bottom: 5px;
         border-top: 1px solid #2A2C50;

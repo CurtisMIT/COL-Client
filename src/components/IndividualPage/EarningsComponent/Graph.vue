@@ -1,7 +1,7 @@
 <template>
-    <div class="mainGraph" id="mainGraph">
-        <div class="headerGraph">Growth in Earnings/Career Throughout the Years</div>
-        <div class="displayGraph" id="earningsDisplay">            
+    <div class="graph-main" id="graph-main">
+        <div class="graph-header">Growth in Earnings/Career Throughout the Years</div>
+        <div class="graph-display" id="earningsDisplay">            
         </div>
     </div>
 </template>
@@ -190,20 +190,20 @@ export default class Graph extends Vue {
 </script>
 
 <style scoped>
-.mainGraph {    
+.graph-main {    
     display: flex;    
     flex-direction: column;     
     color: #2A2C50;        
     width: 506px;
     height: 362px;
 }
-.headerGraph {
+.graph-header {
     color: #2A2C50;
     font-size: 16px;
     font-weight: bold;    
 }
 
-.displayGraph {
+.graph-display {
     display: flex;
     flex-direction:column;
     margin: 28px auto;

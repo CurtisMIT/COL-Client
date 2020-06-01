@@ -1,7 +1,7 @@
 <template>
-    <div class="mainMore">
-        <div class="outlineMore">
-            <div class="titleMore">
+    <div class="btn">
+        <div class="btn-outline">
+            <div class="btn-title">
                 + More Filters
             </div>
         </div>
@@ -18,21 +18,21 @@ export default class MoreFilters extends Vue {
 </script>
 
 <style scoped>
-.mainMore {
+.btn {
     padding-top: 22px;    
     padding-left: 44px;    
 }
-.outlineMore {
+.btn-outline {
     display: flex;
     border: 1.5px solid #2A2C50;
     border-radius: 100px;
     height: 40px;
     width: 164px;    
 }
-    .outlineMore:hover {
+    .btn-outline:hover {
         cursor: pointer;
     }
-.titleMore {
+.btn-title {
     margin: auto;
     font-size: 16px;
     color: #2B2C50;

@@ -1,7 +1,7 @@
 <template>
-    <div class="main">        
-        <div class="mainFrame">  
-            <div class="inputDiv">
+    <div class="container-main">        
+        <div class="container-outline">  
+            <div class="container-elem">
                 <Job/>  
                 <Location/>                   
             </div>   
@@ -32,11 +32,11 @@ export default class FilterBox extends Vue {
 </script>
 
 <style scoped>
-.main {
+.container-main {
     display: flex;
     margin-top: 85px;
 }
-.mainFrame {
+.container-outline {
     display: flex;
     flex-direction: column;
     margin: auto;
@@ -45,7 +45,7 @@ export default class FilterBox extends Vue {
     background-color: #F8F8FB;    
     border-radius: 10px;    
 }
-.inputDiv {
+.container-elem {
     display: flex; 
     flex-direction: row;    
 }

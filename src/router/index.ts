@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
 import Home from '../views/Home.vue'
 import Individual from '../views/Individual.vue'
+import Submit from '../views/Submit.vue'
 
 Vue.use(VueRouter)
 
@@ -15,6 +16,11 @@ Vue.use(VueRouter)
     path: '/individual/:id',
     name: 'Individual',
     component: Individual
+  },
+  {
+    path: '/submit',
+    name: 'Submit',
+    component: Submit
   },
   {
     path: '/about',

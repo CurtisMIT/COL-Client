@@ -1,7 +1,7 @@
 <template>
-    <div class="mainGraph">
-        <div class="headerGraph">Salary in X Area</div>
-        <div class="displayGraph" id="areaEarnings">            
+    <div class="graph-main">
+        <div class="graph-header">Salary in X Area</div>
+        <div class="graph-display" id="areaEarnings">            
         </div>
     </div>
 </template>
@@ -141,25 +141,27 @@ export default class Graph extends Vue {
 </script>
 
 <style scoped>
-.mainGraph {    
+.graph-main {    
     display: flex;    
     flex-direction: column;     
     color: #2A2C50;        
     width: 506px;
     height: 362px;    
+    
 }
-.headerGraph {
+.graph-header {
     text-align: left;
     color: #2A2C50;
     font-size: 16px;
     font-weight: bold;    
 }
 
-.displayGraph {
+.graph-display {
     display: flex;
     flex-direction:column;
     margin: 28px auto;
     width: 447px;  
+    margin: 28px auto auto 15px;
 }
 
 .myCircle:hover {
