@@ -73,7 +73,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import Continue from '../BottomButton/Continue.vue'
-// import autosize from 'autosize'
+import autosize from 'autosize'
 
 @Component({
     components: {

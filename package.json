@@ -9,6 +9,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "autosize": "^4.0.2",
     "axios": "^0.19.2",
     "core-js": "^3.6.4",
     "d3": "^5.16.0",
@@ -23,6 +24,7 @@
     "vuex-class": "^0.3.2"
   },
   "devDependencies": {
+    "@types/autosize": "^3.0.7",
     "@types/d3": "^5.7.2",
     "@types/jest": "^24.0.19",
     "@typescript-eslint/eslint-plugin": "^2.26.0",
