@@ -3,6 +3,7 @@ import { IndividualState } from '../../types/modules/individualTypes'
 import { RootState } from '../../types' 
 
 const state: IndividualState  = {
+    // sample data until connecting with BE
     basic: {date: 'May 2020', title: 'Sr. Product Designer', experience: 5, location: 'San Francisco', industry: 'Finance', quote: 'Party all day and night cuz of keto diet cuz gains, makes no sense.', tag: ['Traveler', 'Foodie', 'Party Animal']},
     earnings: [
         {category: 'Base', amount: 24500, information: 'it was pretty shitty'},

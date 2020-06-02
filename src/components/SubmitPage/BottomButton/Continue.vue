@@ -10,12 +10,12 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import { Action } from 'vuex-class'
-import { SubmitState } from '../../../types/modules/submitTypes'
-const namespace = "submit"
+import { HeaderState } from '@/types/modules/submitTypes'
+const namespace = "submitHeader"
 
 @Component 
 export default class Continue extends Vue {
-    @Action('addProgress', { namespace }) addProgress!: SubmitState
+    @Action('addProgress', { namespace }) addProgress!: HeaderState
     @Prop() filled!: boolean
 }
 

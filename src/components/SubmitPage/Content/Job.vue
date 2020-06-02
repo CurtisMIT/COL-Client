@@ -2,113 +2,127 @@
     <div class="form-main-job">                
         <div class="input-elem">
             <div class="input-title">💼 Job Title</div>
-            <input class="input-box-large" placeholder="e.g. Professional Napper"/>
+            <input :class="!submitJob.past? 'input-box-first' : 'input-box-large'" 
+                 @input="typeJob({prop: 'job', $event})"
+            placeholder="e.g. Professional Napper"/>
         </div>
-        <div class="btn-elem">
-            <div class="btn-title">+ Add Past Titles</div>
+        <div v-if="!submitJob.past" class="btn-elem-farright">
+            <div v-on:click="togglePast" class="btn-title">+ Add Past Titles</div>
             <div class="btn-circle">
                 <div class="btn-circle-icon">?</div>
             </div>
+            <div class="container-box-abs">
+                <div class="container-box-arrow"></div>
+                This will display a graph of your career growth throughout time.
+            </div>            
         </div>          
         <div class="input-elem">
             <div class="input-title">️🏙 Industry</div>
-            <input class="input-box-large" placeholder="e.g. Automotive"/>
+            <input class="input-box-large" 
+                @input="typeJob({prop: 'industry', $event})"
+                placeholder="e.g. Automotive"/>
         </div>
         <div class="input-elem">
             <div class="input-title">🗓️ Year of Experience</div>
             <div class="input-row">
-                <input class="input-box-small" placeholder="e.g. 18"/>  
+                <input class="input-box-small"     
+                    type="number"              
+                     @input="typeJob({prop: 'yoe',$event})"
+                    placeholder="e.g. 18"/>  
                 <div class="input-unit-preset">
                     <div class="input-unit-value">years</div>
                 </div>              
             </div>            
         </div>
         <div class="input-elem">
-            <div class="input-title">💰  Yearly Salary</div>
+            <div class="input-title">💰 Yearly Salary</div>
             <div class="input-row">
-                <input class="input-box-small" placeholder="e.g. 35000"/>  
+                <input class="input-box-last" 
+                    type="number"  
+                    @input="typeJob({prop: 'salary',$event})"                    
+                    placeholder="e.g. 35000"/>  
                 <div class="input-box-toggle">
                     <div class="input-unit-valueToggle">$ USD</div>
                     <img src='@/assets/icons/currency.svg' class="input-unit-icon"/>
                 </div>              
             </div>            
         </div>   
-        <div class="btn-elem">
-            <div class="btn-title">+ Add Breakdown</div>
+        <div v-if="!submitJob.breakdown" class="btn-elem">
+            <div v-on:click="toggleBreakdown" class="btn-title">+ Add Breakdown</div>
             <div class="btn-circle">
                 <div class="btn-circle-icon">?</div>
+            </div>
+            <div class="container-box-abs">
+                <div class="container-box-arrow"></div>
+                This will help users have a better picture of your overall compensation.
             </div>
         </div>   
-        <div class="btn-elem-second">
-            <div class="btn-title">+ Add Past Salaries</div>
+        <div  v-if="!submitJob.past" class="btn-elem-farright">
+            <div v-on:click="togglePast" class="btn-title">+ Add Past Salaries</div>
             <div class="btn-circle">
                 <div class="btn-circle-icon">?</div>
             </div>
-        </div>
-        <div class="input-elem-large">
-            <div class="input-title-semi">Salary Breakdown</div>
-            <div class="btn-elem-outside">
-                <div class="btn-elem-column">
-                    <div class="btn-icon-add">+</div>
-                    <div class="btn-icon-del">-</div>
-                </div>                
-                <div class="input-elem-column">
-                    <div class="input-title-small">Type</div>
-                    <input class="input-box-typeSize" placeholder="e.g Bonus"/>
-                </div>
-                <div class="input-elem-colMarginLeft">
-                    <div class="input-title-small">Amount</div>
-                    <input class="input-box-amtSize" placeholder="e.g 35000"/>
-                </div>   
-                <div class="input-unit-presetSmall">                    
-                    <div class="input-unit-value"> $ USD</div>
-                </div>                                         
+            <div class="container-box-abs">
+                <div class="container-box-arrow"></div>
+                This will display a graph of your salary growth throughout time.
             </div>
-            <textarea ref="test" class="textarea" placeholder="Add description (Optional) ..."/>
-        </div>                     
-        <Continue/>
+        </div>
+        <Extra/>
+        <Continue
+            :filled="submitJob.job && submitJob.industry && submitJob.yoe!==0 && submitJob.salary!==0 ? true : false"
+        />
     </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
+import { Action, State } from 'vuex-class'
 import Continue from '../BottomButton/Continue.vue'
-import autosize from 'autosize'
+import Extra from './ExtraJob/Extra.vue'
+import { JobState } from '@/types/modules/submitTypes'
+const namespace = "submitJob"
 
 @Component({
     components: {
-        Continue
+        Continue,
+        Extra
     }
 })
 export default class Job extends Vue {
-    mounted() {                
-        // autosize(this.$refs.test)
-    }
+    @State('submitJob') submitJob!: JobState
+    // typing
+    @Action('typeJob', { namespace }) typeJob!: JobState    
+    // extras        
+    @Action('toggleBreakdown', { namespace }) toggleBreakdown!: JobState
+    @Action('togglePast', { namespace }) togglePast!: JobState
 }
 
 </script>
 
 <style scoped>
+
 .form-main-job {
     display: flex;
     flex-direction: column;    
     margin-left: 15px;   
 }
 
-.input-elem, .input-elem-large {
+.input-elem {
     display: flex;
     flex-direction: column;
     margin: auto;         
 }
-    .input-title, .input-title-semi {
+    .input-title {
         text-align: left;        
         font-size: 20px;
-        font-weight: bold;
+        font-weight: bold;        
     }
-    .input-box-large, .input-box-small {
-        margin-top: 10px;        
-        margin-bottom: 45px;
-        
+    .input-box-large, .input-box-small, .input-box-first, .input-box-last {
+        margin-top: 0px;        
+        margin-bottom: 45px;                
+    }    
+    .input-box-last, .input-box-first {
+        margin-bottom: 5px;
     }
         .form-input:focus {
             outline: none;
@@ -117,12 +131,13 @@ export default class Job extends Vue {
 .input-row {
     display: flex;       
 }
-    .input-box-small {
-        width: 205px;        
+    .input-box-small, .input-box-last {
+        width: 205px;           
     }
+    
     .input-unit-preset, .input-box-toggle {
         display: flex;
-        margin-top: 10px;
+        margin-top: 0px;
         height: 67px;
         width: 95px;        
     }
@@ -135,10 +150,11 @@ export default class Job extends Vue {
         background-color: #F8F8FB;
         border-radius: 10px;
         width: 86.5px;
-        height: 66px;
+        height: 67px;
+        margin-top: 0px;
         margin-left: 6px;
         border: 1.5px solid transparent;
-        transition: border 500ms ease;
+        transition: border 500ms ease;        
     }
         .input-unit-valueToggle {
             margin: auto 0px auto auto;
@@ -151,16 +167,25 @@ export default class Job extends Vue {
             cursor: pointer;
             border: 1.5px solid #BFC1DA;
         }
-.btn-elem, .btn-elem-second {
+.btn-elem, .btn-elem-farright {
     display: flex;
-    margin: -30px auto 10px;
+    margin: 10px auto 0px;
     width: 300px;        
 }
+    .btn-elem-farright {
+        margin-bottom: 7.5px;
+    }
     .btn-title {
         margin-left: auto;
     }
-    .btn-title:hover, .btn-circle:hover {
-        cursor: pointer;
+    .btn-title:hover {        
+        cursor: pointer
+    }
+    .btn-circle:hover{
+        cursor: default;
+    }    
+    .btn-title:active {
+        color: #8A8CAB;
     }
     .btn-circle {
         display: flex;
@@ -176,74 +201,35 @@ export default class Job extends Vue {
         font-size: 14px;
         font-weight: bold;
     }
-.btn-elem-second {
-    margin: auto;    
-}
+    .btn-circle:hover~.container-box-abs{
+        opacity: 1
+    }
 
-.input-elem-large {        
-    margin: 25px auto auto;    
-    width: 300px;     
+
+/* hover for info */
+.container-box-abs {
+    opacity: 0;
+    position: absolute;
+    padding: 15px;    
+    width: 195px;
+    background-color: #2A2C50;
+    border-radius: 5px;
+    color: white;    
+    font-size: 14px;
+    margin-top: -25px;
+    margin-left: 315px; 
+    transition: opacity 500ms ease;           
 }
-    .input-title-semi {
-        font-size: 18px;
-        margin-left: 2px;        
-    }
-    .btn-elem-outside {
-        display: flex;        
-        margin-top: 10px;        
-    }
-        .btn-elem-column{
-            display: flex;
-            flex-direction: column;
-            margin: auto 10px 10px -25px;            
-            height: 65px;
-                      
-        }
-            .btn-icon-add, .btn-icon-del{
-                font-size: 20px;
-                font-weight: bold;
-                margin: auto auto 0px;                
-            }
-            .btn-icon-del {
-                font-size: 22px;
-                margin-top: -7.5px;                
-            }
-            .btn-icon-add:hover, .btn-icon-del:hover {
-                cursor: pointer;
-            }
-        .input-elem-column, .input-elem-colMarginLeft {
-            display: flex;
-            flex-direction: column;
-        }
-            .input-title-small {
-                font-size: 14px;
-                font-weight: bold;
-                margin-left: 7px;
-                margin-right: auto;
-            }
-            .input-box-typeSize, .input-box-amtSize {
-                padding: 0;                
-                margin-top: 7px;
-                width: 105px;
-            }
-        .input-elem-colMarginLeft {
-            margin-left: 12px;            
-        }
-            .input-box-amtSize {
-                width: 115px;
-            }
-        .input-unit-presetSmall {
-            display: flex;
-            margin-top: auto;
-            margin-bottom: 2px;
-            height: 65px;
-            width: 100%;            
-        }
-    .textarea {
+    .container-box-arrow {
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        background-color: #2A2C50;
+        border-radius: 2px;
+        margin-left: -18px;
         margin-top: 10px;
-        margin-left: -4px; 
-        height: 29px;    
-        max-height: 150px;
+        transform: rotate(45deg)
     }
+    
     
 </style>

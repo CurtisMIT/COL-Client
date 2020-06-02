@@ -3,34 +3,36 @@
         <div class="input-elem">
             <div class="input-title">Short Description</div>
             <textarea class="input-textarea" 
-            placeholder="e.g Great WLB, usually don’t eat out that often and hike often."
-            @input="typeDescription($event)"
+                placeholder="e.g Great WLB, usually don’t eat out that often and hike often."
+                @input="typeDescription($event)"
             />
         </div>
         <div class="input-elem">
             <div class="input-title">Tags</div>
             <input v-on:keyup.enter="addTag" class="input-text" 
-            :value="getTag"
-            @input="typeTag($event)"
-            placeholder="e.g. 🌱 Vegan"/>
+                :value="submitAbout.tag"
+                @input="typeTag($event)"
+                placeholder="e.g. 🌱 Vegan"/>
         </div>
         <div class="input-elem-tag">
-            <div v-for="tag in getTagList" :key="tag" class="tagbox">
+            <div v-for="(tag, index) in submitAbout.tagList" :key="`tag-${index}`" class="tagbox">
                 <div v-on:click="removeTag(tag)" class="tagbox-unit">{{tag}}</div>
             </div>
         </div>
         <Continue
-            :filled="getDescription && getTagList.length > 0 ? true : false"
+            :filled="submitAbout.description && submitAbout.tagList.length > 0 ? true : false"
         />
     </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import { Getter, Action } from 'vuex-class'
-import { SubmitState } from '@/types/modules/submitTypes'
+import { State, Action } from 'vuex-class'
+import { AboutState } from '@/types/modules/submitTypes'
 import Continue from '../BottomButton/Continue.vue'
-const namespace = 'submit'
+import autosize from 'autosize'
+
+const namespace = 'submitAbout'
 
 
 @Component({
@@ -38,14 +40,17 @@ const namespace = 'submit'
         Continue
     }
 })
-export default class About extends Vue {
-    @Getter('getDescription', { namespace }) getDescription!: SubmitState
-    @Getter('getTag', { namespace }) getTag!: SubmitState
-    @Getter('getTagList', { namespace }) getTagList!: SubmitState
-    @Action('typeDescription', { namespace }) typeDescription!: SubmitState
-    @Action('typeTag', { namespace }) typeTag!: SubmitState
-    @Action('addTag', { namespace }) addTag!: SubmitState
-    @Action('removeTag', { namespace }) removeTag!: SubmitState    
+export default class About extends Vue {    
+    @State('submitAbout') submitAbout!: AboutState
+    @Action('typeDescription', { namespace }) typeDescription!: AboutState
+    @Action('typeTag', { namespace }) typeTag!: AboutState
+    @Action('addTag', { namespace }) addTag!: AboutState
+    @Action('removeTag', { namespace }) removeTag!: AboutState    
+
+    mounted() {     
+        const textarea = document.querySelectorAll(".input-textarea");           
+        autosize(textarea)
+    }    
 }
 
 </script>
@@ -72,7 +77,7 @@ export default class About extends Vue {
         margin-bottom: 45px;     
     }    
     .input-text, .input-textarea {
-        margin-top: 10px;
+        margin-top: 0px;
     }
 .input-elem-tag {
     flex-direction: row;

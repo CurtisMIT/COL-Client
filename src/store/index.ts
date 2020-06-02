@@ -3,7 +3,9 @@ import Vuex, { StoreOptions } from 'vuex'
 import { RootState } from '../types/index'
 import { listings } from './modules/listings'
 import { individual } from './modules/individual'
-import { submit } from './modules/submit'
+import { submitHeader } from './modules/submit/header'
+import { submitAbout } from './modules/submit/about'
+import { submitJob } from './modules/submit/job'
 
 Vue.use(Vuex)
 
@@ -18,7 +20,10 @@ const store: StoreOptions<RootState> = {
   modules: {
     listings,
     individual,
-    submit
+    // submit's modules
+      submitHeader,
+      submitAbout,
+      submitJob,
   }
 }
 

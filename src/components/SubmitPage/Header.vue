@@ -1,33 +1,33 @@
 <template>
     <div>
         <div class="header-main">
-            <div v-for="stage in submit.stage" :key="stage" class="header-elem">
-                <div :class="[submit.progress.includes(stage) ? 'header-circle' : 'header-circle-unfilled']">
-                    <div :class="[submit.progress.includes(stage) ? 'header-number' : 'header-number-unfilled']">{{stage}}</div>
+            <div v-for="stage in submitHeader.stage" :key="stage" class="header-elem">
+                <div :class="[submitHeader.progress.includes(stage) ? 'header-circle' : 'header-circle-unfilled']">
+                    <div :class="[submitHeader.progress.includes(stage) ? 'header-number' : 'header-number-unfilled']">{{stage}}</div>
                 </div>
             </div>
             <div 
-                :class="[submit.progress[submit.progress.length-1] == 3 
+                :class="[submitHeader.progress[submitHeader.progress.length-1] == 3 
                 ? 'header-bar-full' 
-                    : submit.progress[submit.progress.length-1] == 2 
+                    : submitHeader.progress[submitHeader.progress.length-1] == 2 
                     ? 'header-bar-half' 
                 : 'header-bar'
                 ]">
             </div>        
         </div>        
-        <div class="header-title">{{submit.title[submit.current]}}</div>
+        <div class="header-title">{{submitHeader.header[submitHeader.current]}}</div>
     </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import { State } from 'vuex-class'
-import { SubmitState } from '../../types/modules/submitTypes'
+import { HeaderState } from '../../types/modules/submitTypes'
 
 
 @Component
-export default class Graph extends Vue {
-    @State('submit') submit!: SubmitState    
+export default class Header extends Vue {
+    @State('submitHeader') submitHeader!: HeaderState
 }
 
 </script>
@@ -64,7 +64,7 @@ export default class Graph extends Vue {
     .header-number-unfilled {
         color: #2A2C50
     }
-.header, .header-bar-half, .header-bar-full {
+.header-bar, .header-bar-half, .header-bar-full {
     margin-top: 10px;
     position: absolute;
     width: 220px;
