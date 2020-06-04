@@ -78,14 +78,15 @@ const getters: GetterTree<IndividualState, RootState> = {
     },
     getGrowth(state){
         return state.growth
-    },
-    getGrowthMax(state){
-        let maxSalary = 0, maxYear = 0, entry
-        for (entry of state.growth) {
+    },    
+    getGrowthStats(state){
+        let maxSalary = 0, maxYear = 0, minSalary = state.growth[0].salary
+        for (const entry of state.growth) {
+            minSalary = Math.min(entry.salary, minSalary)
             maxSalary = Math.max(entry.salary, maxSalary)
             maxYear = Math.max(entry.year, maxYear)
         }
-        return [maxYear, maxSalary]
+        return [maxYear, minSalary*0.5, maxSalary*1.2]
     },
     getExpenses(state) {
         return state.expenses
@@ -106,7 +107,7 @@ const getters: GetterTree<IndividualState, RootState> = {
             maxSalary = Math.max(entry.salary, maxSalary)
             maxYear = Math.max(entry.year, maxYear)
         }
-        return [maxYear, maxSalary]        
+        return [maxYear, maxSalary*1.2]        
     },
     getMarketCOL(state) {
         return state.marketCOL
@@ -117,7 +118,7 @@ const getters: GetterTree<IndividualState, RootState> = {
             maxCOL = Math.max(entry.col, maxCOL)
             maxYear = Math.max(entry.year, maxYear)
         }
-        return [maxYear, maxCOL]        
+        return [maxYear, maxCOL*1.2]        
     },        
 }
 

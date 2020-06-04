@@ -24,11 +24,12 @@ export default class Graph extends Vue {
     
     // eslint-disable-next-line
     @Prop() growth!: IndividualState | any
-    @Prop() growthMax!: number[]
+    @Prop() growthStats!: number[]
     
     mounted() {
-        const maxYear = this.growthMax[0]
-        const maxSalary = this.growthMax[1]        
+        const maxYear = this.growthStats[0]
+        // const minSalary = this.growthStats[1]
+        const maxSalary = this.growthStats[2]        
 
         const svg = d3.select("#earningsDisplay")
             .append('svg')
@@ -58,6 +59,25 @@ export default class Graph extends Vue {
         .attr("stop-color", "#24CF9A")
         .attr("stop-opacity", 0)
         
+        // grid lines before x and y 
+        const y2 = d3.scaleLinear()
+            .domain([0,maxSalary])
+            .range([height, 0])  
+            .nice()
+        const yGrid = svg.append('g')
+            .attr("stroke-dasharray", "4,5")                          
+            .call(d3.axisLeft(y2)
+               .tickSize(-width)                       
+               .tickPadding(10)  
+               .ticks(5)           
+            )        
+            yGrid.selectAll('path')
+                .style('stroke', 'white')
+            yGrid.selectAll('line')
+                .style('stroke', '#BFC1DA')
+            yGrid.selectAll('text')
+                .style('opacity', '0')
+
         // x val          
         const x = d3.scaleLinear()        
             .range([0, width])
@@ -78,14 +98,15 @@ export default class Graph extends Vue {
         // y val
         const y = d3.scaleLinear()
             .domain([0, maxSalary])
-            .range([height, 0])            
+            .range([height, 0])  
+            .nice()  
         const yAxis = svg.append('g')
-            // .attr("stroke-dasharray", "0,1")                
+            // .attr("stroke-dasharray", "0,1")                           
             .call(d3.axisLeft(y)
                 .tickPadding(10)
                 .ticks(5)
                 .tickSize(0)                
-            )                     
+            )                               
             yAxis.selectAll('path')
                 .style('stroke', 'white')
             yAxis.selectAll('text')
@@ -138,7 +159,7 @@ export default class Graph extends Vue {
             .style("color", "#2A2C50")            
             .style("text-align", "center") 
             .style("margin", "auto")  
-            .style('font-size', '12px')    
+            .style('font-size', '14px')    
             .style('position', 'absolute')     
                                                                                    
         // eslint-disable-next-line
@@ -195,19 +216,19 @@ export default class Graph extends Vue {
     flex-direction: column;     
     color: #2A2C50;        
     width: 506px;
-    height: 362px;
+    height: 362px;    
 }
 .graph-header {
     color: #2A2C50;
     font-size: 16px;
-    font-weight: bold;    
+    font-weight: bold;       
 }
 
 .graph-display {
     display: flex;
     flex-direction:column;
-    margin: 28px auto;
-    width: 447px;;    
+    margin: 15px auto;
+    width: 447px;;  
 }
 
 

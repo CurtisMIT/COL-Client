@@ -56,6 +56,14 @@ export default class About extends Vue {
 </script>
 
 <style scoped>
+@keyframes appear {
+    from {
+        opacity: 0;
+    }   
+    to {
+        opacity: 1;
+    }
+}
 .form-main-about {
     display: flex;
     flex-direction: column;    
@@ -66,6 +74,7 @@ export default class About extends Vue {
     margin: auto;
     width: 300px;
     /* border: 1px dotted black; */
+    animation: appear 500ms ease;  
 }
     .input-title {
         margin-left: 10px;

@@ -9,6 +9,10 @@
 </template>
 
 <style>
+::-webkit-scrollbar {
+    width: 0px;
+    background: transparent; /* make scrollbar transparent */
+}
 #app {  
   font-family: 'Noto Sans', sans-serif;
   -webkit-font-smoothing: antialiased;

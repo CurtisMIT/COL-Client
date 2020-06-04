@@ -7,15 +7,47 @@ const state: JobState = {
     industry: '',
     yoe: 0,
     salary: 0,
-    currency: '',
+    currency: false,
     breakdown: false,
     past: false,
     breakdownList: [],
-    pastList: [] 
+    pastList: [],
+
 }
-const getters: GetterTree<JobState, RootState> = {}
+const getters: GetterTree<JobState, RootState> = {
+    // confirm if breakdown is filled
+    isBreakdown(state) {
+        if (state.breakdownList.length == 0) {
+            return true
+        } else {
+            // check if each are filled in
+            for (const entry of state.breakdownList) {
+                if (!entry.type || (entry.amount == 0 || isNaN(entry.amount))) {
+                    return false
+                }
+            }
+            return true
+        }
+    },
+    // confirm if past salaries is filled
+    isPast(state) {
+        if (state.pastList.length == 0){
+            return true
+        } else {
+            for (const entry of state.pastList){
+                if (!entry.job || (entry.year == 0 || isNaN(entry.year)) || (entry.amount == 0 || isNaN(entry.amount))){ 
+                    return false
+                }
+            }
+            return true
+        }
+    } 
+}
 const mutations: MutationTree<JobState> = {
-    // job
+    toggleCurrency(state) {
+        state.currency = !state.currency
+    },
+    // typing 
     typeJob (state, payload) {
         const { prop, $event } = payload  
         if (prop === "job") {
@@ -23,9 +55,17 @@ const mutations: MutationTree<JobState> = {
         } else if (prop === "industry") {
             state.industry = $event.target.value
         } else if (prop === "yoe") {
-            state.yoe = $event.target.valueAsNumber
+            if (isNaN($event.target.value)) {
+                state.yoe = $event.target.value
+            } else {
+                state.yoe = parseFloat($event.target.value)
+            }                        
         } else if (prop === "salary") {
-            state.salary = $event.target.valueAsNumber
+            if (isNaN($event.target.value)) {
+                state.salary = $event.target.value
+            } else {
+                state.salary = parseFloat($event.target.value)
+            }            
         }
     },
     toggleBreakdown (state) {
@@ -86,6 +126,9 @@ const mutations: MutationTree<JobState> = {
 }
 const actions: ActionTree<JobState, RootState> = {
     // job
+    toggleCurrency({ commit }) {
+        commit('toggleCurrency')
+    },
     typeJob ({ commit }, payload) {
         commit('typeJob', payload)
     },   

@@ -17,6 +17,7 @@ const namespace = "submitHeader"
 export default class Continue extends Vue {
     @Action('addProgress', { namespace }) addProgress!: HeaderState
     @Prop() filled!: boolean
+    
 }
 
 </script>

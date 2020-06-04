@@ -10,7 +10,7 @@
                     />
                 <Graph 
                     :growth="growth"
-                    :growthMax="growthMax"
+                    :growthStats="growthStats"
                     />
             </div>
             
@@ -38,7 +38,7 @@ export default class Earnings extends Vue {
     @Getter('getEarnings', { namespace }) earnings!: IndividualState 
     @Getter('getTotalEarnings', { namespace }) totalEarnings!: number
     @Getter('getGrowth', { namespace }) growth!: IndividualState    
-    @Getter('getGrowthMax', { namespace }) growthMax!: IndividualState    
+    @Getter('getGrowthStats', { namespace }) growthStats!: IndividualState    
 
     
 }

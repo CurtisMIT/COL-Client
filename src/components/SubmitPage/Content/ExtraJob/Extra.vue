@@ -1,5 +1,6 @@
 <template>
-    <div class="form-main-job">                
+    <div class="form-main-job">            
+        <transition name="fade">
         <div v-if="submitJob.breakdown" class="input-elem-large">
             <div class="input-title-semi">Salary Breakdown</div>
             <div v-for="(entry, index) in submitJob.breakdownList" :key="`entry.type-${index}`" class="input-elem-appear">
@@ -34,9 +35,11 @@
             </div>
             <div v-on:click="toggleBreakdown" class="btn-text-end">Remove Section</div>
         </div>  
+        </transition> 
+        <transition name="fade">   
         <div v-if="submitJob.past" class="input-elem-large">
             <div class="input-title-semi">Past Info</div>
-            <div v-for="(entry, index) in submitJob.pastList" :key="`entry.job-${index}`">
+            <div v-for="(entry, index) in submitJob.pastList" :key="`entry.job-${index}`" class="input-elem-appear">
                 <div class="btn-elem-outside">
                     <div class="btn-elem-columnJob">
                         <div v-on:click="addPast" class="btn-icon-add">+</div>
@@ -63,9 +66,11 @@
                     <div class="input-elem-colMarginLeft">
                         <div class="input-title-small">Amount</div>
                         <input class="input-box-amtSize" 
+                            placeholder="e.g 35000"
                             v-model="entry.amount"
+                            @input="typePast({index, prop: 'amount', $event})"
                             type="number" 
-                            placeholder="e.g 35000"/>
+                            />
                     </div>   
                     <div class="input-unit-presetSmall">                    
                         <div class="input-unit-value"> $ USD</div>
@@ -73,7 +78,8 @@
                 </div>   
             </div>
             <div v-on:click="togglePast" class="btn-text-end">Remove Section</div>  
-        </div>                             
+        </div>  
+        </transition>                            
     </div>
 </template>
 
@@ -107,6 +113,12 @@ export default class Job extends Vue {
 </script>
 
 <style scoped>
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
 
 @keyframes appear {
     from {
@@ -119,8 +131,9 @@ export default class Job extends Vue {
 
 .form-main-job {
     display: flex;
-    flex-direction: column;    
-    margin-left: 15px;   
+    flex-direction: column;         
+    margin: auto;
+    width: 355px;              
 }
 .input-elem-appear {
     animation: appear 500ms ease;  
@@ -128,7 +141,7 @@ export default class Job extends Vue {
 .input-elem, .input-elem-large {
     display: flex;
     flex-direction: column;
-    margin: auto;         
+    margin: auto;                             
 }
     .input-title, .input-title-semi {
         text-align: left;        

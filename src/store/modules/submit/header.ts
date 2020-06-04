@@ -4,9 +4,9 @@ import { RootState } from '@/types/index'
 
 const state: HeaderState = {
     // header
-    current: 1,
+    current: 2,
     stage: [1,2,3],
-    progress: [1,2],
+    progress: [1,2,3], 
     header: ['📝 About','💪 Your Job', '💸 Your Expense'],
 }
 const getters: GetterTree<HeaderState, RootState> = {

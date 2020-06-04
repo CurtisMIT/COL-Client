@@ -32,6 +32,24 @@ export default class Graph extends Vue {
             .append('g')
             .attr('transform', "translate(" + margin.left + "," + margin.top + ")")
 
+        // grid lines before x and y 
+        const y2 = d3.scaleLinear()
+            .domain([0,maxCOL])
+            .range([height, 0])
+            .nice()  
+        const yGrid = svg.append('g')
+            .attr("stroke-dasharray", "4,5")                          
+            .call(d3.axisLeft(y2)
+               .tickSize(-width)                       
+               .tickPadding(10)   
+               .ticks(5)                            
+            )        
+            yGrid.selectAll('path')
+                .style('stroke', 'white')
+            yGrid.selectAll('line')
+                .style('stroke', '#BFC1DA')
+            yGrid.selectAll('text')
+                .style('opacity', '0')
         // x val
         const x = d3.scaleLinear()            
             .domain([0, 0])
@@ -55,13 +73,14 @@ export default class Graph extends Vue {
         // y val
         const y = d3.scaleLinear()
             .domain([0, maxCOL])
-            .range([height, 0])            
+            .range([height, 0]) 
+            .nice()           
         const yAxis = svg.append('g')
             // .attr("stroke-dasharray", "0,1")                
             .call(d3.axisLeft(y)
                 .tickPadding(10)
-                .ticks(5)
-                .tickSize(0)                
+                .tickSize(0) 
+                .ticks(5)               
             )                     
             yAxis.selectAll('path')
                 .style('stroke', '#F8F8FB')
@@ -72,11 +91,16 @@ export default class Graph extends Vue {
         // add tooltip
         const tooltip = d3.select("#areaCOL")
             .append("div")
-            .style("opacity", 1)            
-            .attr("class", "tooltip")
+            .style("opacity", 0)
+            .attr("class", "tooltip")                         
+            .style('position', 'absolute')   
+            .style('padding', '15px')
+            .style("margin", "auto")     
+            .style('background-color', '#D7D9F0')     
+            .style('border-radius', '5px') 
+            .style('font-size', '14px')    
             .style("color", "#2A2C50")            
-            .style("text-align", "left") 
-            .style("margin", "auto")                          
+            .style("text-align", "left")                         
                                                        
         const mouseover = function() {
             tooltip
@@ -94,7 +118,9 @@ export default class Graph extends Vue {
                 ⌛: ${d.year} years 
                 <br/>
                 💸: ${d.col}`
-            )            
+            )      
+            .style("left", (d3.event.pageX+15 + "px"))
+            .style("top", (d3.event.pageY-15 + "px"))      
         }          
         
         // Add dots
@@ -160,7 +186,7 @@ export default class Graph extends Vue {
     text-align: left;
     color: #2A2C50;
     font-size: 16px;
-    font-weight: bold;    
+    font-weight: bold;        
 }
 
 .graph-display {    

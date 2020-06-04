@@ -17,7 +17,7 @@ export interface JobState {
     industry: string
     yoe: number
     salary: number
-    currency: string
+    currency: boolean
     breakdown: boolean
     past: boolean
     breakdownList: Array<Salary>
@@ -34,3 +34,12 @@ export interface JobState {
         amount: number
         description?: string
     }
+
+    export interface ExpenseState {
+        expenseList: Array<Expense>
+    }
+        export interface Expense {
+            category: string
+            amount: number
+            description?: string
+        }
