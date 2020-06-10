@@ -1,6 +1,6 @@
 <template>
     <div class="graph-main">
-        <div class="graph-header">Salary in X Area</div>
+        <div class="graph-header">Salary in {{location}}</div>
         <div class="graph-display" id="areaEarnings">            
         </div>
     </div>
@@ -21,6 +21,7 @@ export default class Graph extends Vue {
     // eslint-disable-next-line
     @Prop() marketSalary!: IndividualState | any
     @Prop() marketSalaryMax!: number[]
+    @Prop() location!: string
     @Prop() comma!: (value: number) => string       
 
     

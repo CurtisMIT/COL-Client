@@ -1,16 +1,18 @@
 <template>
     <div class="container-main">
         <div class="container-body">
-            <div class="container-header">Market in X Area</div>
+            <div class="container-header">Market in {{individual.basic[0].location}}</div>
             <div class="divider"></div>
             <div v-if="individual.market.length !== 0" class="container-elem">                
                 <Graph                    
                     :comma="comma"
+                    :location="individual.basic[0].location"
                     :marketSalary="individual.market"
                     :marketSalaryMax="marketSalaryMax"
                 />       
                 <COLGraph
                     :comma="comma"
+                    :location="individual.basic[0].location"
                     :marketCOL="individual.market"
                     :marketCOLMax="marketCOLMax"
                 />         

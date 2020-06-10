@@ -1,5 +1,5 @@
 <template>
-    <div class="mainSubmitView">      
+    <div class="container-main-submit">      
         <Header/>
         <Content/>
     </div>
@@ -36,7 +36,7 @@ export default class Submit extends Vue {
 </script>
 
 <style scoped>
-.mainSubmitView { 
+.container-main-submit { 
   display: flex;
   flex-direction: column;   
     

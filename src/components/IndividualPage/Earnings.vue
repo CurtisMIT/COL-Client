@@ -3,7 +3,7 @@
         <div class="container-body">
             <div class="container-title">Earnings</div>
             <div class="divider"></div>
-            <div v-if="individual.earnings.length !== 0 && individual.growth.length !== 0" class="container-elem">
+            <div class="container-elem">
                 <Table 
                     :comma="comma"
                     :type="'Earnings'"

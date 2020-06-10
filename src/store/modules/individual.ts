@@ -6,19 +6,26 @@ import Axios from 'axios'
 
 const URL = `http://localhost:5000/individual`
 
-const state: IndividualState  = {
-    // sample data until connecting with BE
-    basic: [],
-    earnings: [],
-    growth: [],
-    expenses: [],
-    market: [],  
-    others: [],  
+
+const getDefaultIndividual = () => {
+    return {
+        basic: [],
+        earnings: [],
+        growth: [],
+        expenses: [],
+        market: [],  
+        others: [],          
+    }
 }
-const getters: GetterTree<IndividualState, RootState> = {        
+const state = getDefaultIndividual()
+
+const getters: GetterTree<IndividualState, RootState> = {     
+    getBasic(state) {
+        return state.basic
+    }, 
     getTotalEarnings(state) {
-        let sum = 0, entry        
-        for (entry of state.earnings) {
+        let sum = 0
+        for (const entry of state.earnings) {
             sum += entry.amount
         }
         return sum
@@ -33,8 +40,8 @@ const getters: GetterTree<IndividualState, RootState> = {
         return [maxYear, minSalary*0.5, maxSalary*1.2]
     },    
     getTotalExpenses(state) {
-        let sum = 0, entry        
-        for (entry of state.expenses) {
+        let sum = 0      
+        for (const entry of state.expenses) {
             sum += entry.amount
         }
         return sum
@@ -58,6 +65,10 @@ const getters: GetterTree<IndividualState, RootState> = {
 }
 
 const mutations: MutationTree<IndividualState> = {
+    // reset
+    resetIndividual(state) {
+        Object.assign(state, getDefaultIndividual())
+    },
     // add isOpen for tables
     isEarnings(state, target) {
         state.earnings[target].isOpen = !state.earnings[target].isOpen        
@@ -69,7 +80,9 @@ const mutations: MutationTree<IndividualState> = {
     fetchBasic(state, payload) {        
         state.basic = payload
     },
-    fetchEarnings(state, payload) {        
+    fetchEarnings(state, payload) {  
+        
+        // what if basic is not yet populated
         const base = {
             amount: state.basic[0].earnings,
             category: 'Total',
@@ -116,41 +129,54 @@ const mutations: MutationTree<IndividualState> = {
     }
 }
 const actions: ActionTree<IndividualState, RootState> = {
+    // reset
+    resetIndividual({ commit }) {
+        commit('resetIndividual')
+    },
     isEarnings({ commit }, target) {
         commit('isEarnings', target)
     },
     isExpenses({ commit }, target) {
         commit('isExpenses', target)
     },
-    fetchBasic({ commit }) {        
-        Axios.get(`${URL}/header/${router.currentRoute.params.id}`).then((response) => {                     
-            commit('fetchBasic', response.data)
-        })        
+    fetchBasic({ commit, dispatch }) {        
+        Axios.get(`${URL}/header/${router.currentRoute.params.id}`)
+            .then((response) => {                     
+                commit('fetchBasic', response.data)
+                // earnings, expenses, growth rely on basic getting its information first
+                dispatch('fetchEarnings')
+                dispatch('fetchExpenses')
+                dispatch('fetchGrowth')
+            })              
     },
     fetchEarnings({ commit }) {
-        Axios.get(`${URL}/earnings/${router.currentRoute.params.id}`).then((response)=> {
-            if (response.data !== null && typeof response.data !== "undefined") {
-                for (const entry of response.data) {
-                    entry.isOpen = false
-                }
-            }            
-            commit('fetchEarnings', response.data)            
-        })
+        Axios.get(`${URL}/earnings/${router.currentRoute.params.id}`)
+            .then((response)=> {
+                if (response.data !== null && typeof response.data !== "undefined") {
+                    for (const entry of response.data) {
+                        entry.isOpen = false
+                    }                                           
+                }                
+                commit('fetchEarnings', response.data)                     
+            })
     },
     fetchGrowth({ commit }) {
-        Axios.get(`${URL}/growth/${router.currentRoute.params.id}`).then((response) => {            
-            commit('fetchGrowth', response.data)
+        Axios.get(`${URL}/growth/${router.currentRoute.params.id}`)
+            .then((response) => {  
+                commit('fetchGrowth', response.data)        
         })
     },
     fetchExpenses({ commit }) {
-        Axios.get(`${URL}/expenses/${router.currentRoute.params.id}`).then((response) => {            
-            if (response.data !== null && typeof response.data !== "undefined") {
-                for (const entry of response.data) {
-                    entry.isOpen = false
+        Axios.get(`${URL}/expenses/${router.currentRoute.params.id}`)
+            .then((response) => {            
+                if (response.data !== null && typeof response.data !== "undefined") {
+                    for (const entry of response.data) {
+                        entry.isOpen = false
+                    }                                                           
                 }
-            }
-            commit("fetchExpenses", response.data)            
-        })
+                commit("fetchExpenses", response.data)                         
+            })
+        return state.basic
     },
     fetchMarket({ commit }) {
         Axios.get(`${URL}/market/${router.currentRoute.params.id}`).then((response)=> {
@@ -158,7 +184,7 @@ const actions: ActionTree<IndividualState, RootState> = {
         })
     },
     fetchOthers({ commit }) {
-        Axios.get(`${URL}/others/${router.currentRoute.params.id}`).then((response) => {
+        Axios.get(`${URL}/others/${router.currentRoute.params.id}`).then((response) => {            
             commit("fetchOthers", response.data)
         })
     }

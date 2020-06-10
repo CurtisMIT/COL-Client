@@ -8,22 +8,17 @@
         <img v-if="listings.view === 'List'" class="switchClick" src="../assets/icons/list.svg" />
         <img v-if="listings.view === 'Grid'" v-on:click="GA('List')" class="switchClick"  src="../assets/icons/listx.svg" />                    
     </div>    
-    <Listing/>
-    <!-- <img alt="Vue logo" src="../assets/logo.png"> -->
-    <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
+    <Listing/>    
   </div>
 </template>
 
 <script lang="ts">
-// @ is an alias to /src
-// import HelloWorld from '@/components/HelloWorld.vue'
 import { Component, Vue } from 'vue-property-decorator';
 import Header from '@/components/MainPage/Header.vue'
 import FilterBox from '@/components/MainPage/FilterBox.vue'
 import Listing from '@/components/MainPage/Listing.vue'
 import { State, Action } from 'vuex-class'
 import { ViewState } from '../types/modules/listingsTypes'
-
 
 const namespace = 'listings'
 
@@ -34,7 +29,6 @@ const namespace = 'listings'
     Listing
   }
 })
-
 export default class Home extends Vue {
     @State('listings') listings!: ViewState       
     @Action('changeView', { namespace }) changeView!: (val: string) => void;  

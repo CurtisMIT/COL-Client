@@ -1,11 +1,12 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <Header/>
-      <!-- <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link> -->
+    <div id="mobile"> Please increase your width. </div>
+    <div id="content">
+      <div id="nav">
+        <Header/>        
+      </div>
+      <router-view/>
     </div>
-    <router-view/>
   </div>
 </template>
 
@@ -37,6 +38,23 @@ export default class App extends Vue {
     width: 0px;
     background: transparent; /* make scrollbar transparent */
 }
+#mobile {
+  display: none;
+}
+
+@media only screen and (max-width: 768px) {
+  #content {
+    display: none;
+  }
+  #mobile {
+    display: block;
+    text-align: center;
+    margin-top: 100px;
+    font-size: 24px;        
+  }
+}
+
+
 #app {  
   font-family: 'Noto Sans', sans-serif;
   -webkit-font-smoothing: antialiased;

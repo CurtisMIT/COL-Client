@@ -1,6 +1,6 @@
 <template>
     <div class="graph-main">
-        <div class="graph-header">Cost of living in X Area</div>
+        <div class="graph-header">Cost of living in {{location}}</div>
         <div class="graph-display" id="areaCOL">            
         </div>
     </div>
@@ -21,6 +21,7 @@ export default class Graph extends Vue {
     // eslint-disable-next-line
     @Prop() marketCOL!: IndividualState | any
     @Prop() marketCOLMax!: number[]
+    @Prop() location!: string
     @Prop() comma!: (value: number) => string       
 
     mounted() {

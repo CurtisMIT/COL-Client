@@ -3,7 +3,7 @@
         <div class="container-body">
             <div class="container-header">Expenses</div>
             <div class="divider"></div>
-            <div v-if="individual.expenses.length !== 0" class="container-elem">
+            <div class="container-elem">
                 <Table
                     :comma="comma"
                     :type="'Expenses'"
@@ -11,7 +11,7 @@
                     :tableItems="individual.expenses"
                     :totalAmount="totalExpenses"
                     :isOpen="isExpenses"/>    
-                <Pie v-if="individual.expenses.length !== 0"
+                <Pie 
                     :comma="comma"
                     :currency="individual.basic[0].currency"
                     :tableItems="individual.expenses"
