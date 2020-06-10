@@ -2,15 +2,19 @@ import { Module, ActionTree, MutationTree, GetterTree } from 'vuex';
 import { HeaderState } from '@/types/modules/submitTypes'
 import { RootState } from '@/types/index' 
 
-const state: HeaderState = {
-    // header
-    current: 2,
-    stage: [1,2,3],
-    progress: [1,2,3], 
-    header: ['📝 About','💪 Your Job', '💸 Your Expense'],
+const getDefaultHeader = () => {
+    return { 
+        current: 0,
+        stage: [1,2,3],
+        progress: [1], 
+        header: ['📝 About','💪 Your Job', '💸 Your Expense'],        
+    }
 }
-const getters: GetterTree<HeaderState, RootState> = {
-}
+
+const state = getDefaultHeader()
+
+const getters: GetterTree<HeaderState, RootState> = {}
+
 const mutations: MutationTree<HeaderState> = {    
     increment (state) {
         state.current++
@@ -18,6 +22,9 @@ const mutations: MutationTree<HeaderState> = {
     add (state) {
         const { progress, stage, current } = state        
         state.progress = [...progress, stage[current]]
+    },
+    resetHeader(state) {
+        Object.assign(state, getDefaultHeader())
     }
 }
 const actions: ActionTree<HeaderState, RootState> = {
@@ -26,6 +33,9 @@ const actions: ActionTree<HeaderState, RootState> = {
         commit('increment')        
         commit('add')
     },
+    resetHeader({ commit }) {
+        commit('resetHeader')
+    }
 }
 const namespaced = true
 

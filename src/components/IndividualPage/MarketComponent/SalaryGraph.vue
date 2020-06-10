@@ -21,6 +21,7 @@ export default class Graph extends Vue {
     // eslint-disable-next-line
     @Prop() marketSalary!: IndividualState | any
     @Prop() marketSalaryMax!: number[]
+    @Prop() comma!: (value: number) => string       
 
     
     mounted() {
@@ -115,14 +116,14 @@ export default class Graph extends Vue {
             .style("opacity", 1)
         }
         // eslint-disable-next-line
-        const mousemove = function(d: any) {
+        const mousemove = (d: any) => {
             tooltip
             .html(
                 `💼: ${d.title} 
                 <br/>
-                ⌛: ${d.year} years 
+                ⌛: ${d.experience} years 
                 <br/>
-                💰: ${d.salary}`
+                💰: ${this.comma(d.earnings)}`
             )            
             .style("left", (d3.event.pageX+15 + "px"))
             .style("top", (d3.event.pageY-15 + "px"))
@@ -135,9 +136,9 @@ export default class Graph extends Vue {
             .enter()            
             .append("circle")    
             // eslint-disable-next-line        
-            .attr("cx", function(d: any) {return x(d.year)})
+            .attr("cx", function(d: any) {return x(d.experience)})
             // eslint-disable-next-line
-            .attr("cy", function (d: any) { return y(d.salary)} )                    
+            .attr("cy", function (d: any) { return y(d.earnings)} )                    
             .attr("r", 3.5)
             .style("fill", "#24CF9A")
             .on("mouseover", mouseover )
@@ -162,9 +163,9 @@ export default class Graph extends Vue {
             .delay(function(d,i){return(i*100)})
             .duration(2000)
             // eslint-disable-next-line
-            .attr("cx", function (d: any) { return x(d.year) })
+            .attr("cx", function (d: any) { return x(d.experience) })
             // eslint-disable-next-line
-            .attr("cy", function (d: any) { return y(d.salary) })                
+            .attr("cy", function (d: any) { return y(d.earnings) })                
     }
 }
 

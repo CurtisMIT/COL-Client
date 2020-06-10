@@ -1,12 +1,12 @@
 <template>
-  <div class="home">
+  <div class="home">    
     <Header/>
     <FilterBox/>    
     <div class="switchDisplay">
         <img v-if="listings.view === 'Grid'" class="switchClick" src="../assets/icons/grid.svg" />
-        <img v-if="listings.view === 'List'"  v-on:click="changeView('Grid')" class="switchClick"  src="../assets/icons/gridx.svg" />
+        <img v-if="listings.view === 'List'"  v-on:click="GA('Grid')" class="switchClick"  src="../assets/icons/gridx.svg" />
         <img v-if="listings.view === 'List'" class="switchClick" src="../assets/icons/list.svg" />
-        <img v-if="listings.view === 'Grid'" v-on:click="changeView('List')" class="switchClick"  src="../assets/icons/listx.svg" />                    
+        <img v-if="listings.view === 'Grid'" v-on:click="GA('List')" class="switchClick"  src="../assets/icons/listx.svg" />                    
     </div>    
     <Listing/>
     <!-- <img alt="Vue logo" src="../assets/logo.png"> -->
@@ -23,6 +23,8 @@ import FilterBox from '@/components/MainPage/FilterBox.vue'
 import Listing from '@/components/MainPage/Listing.vue'
 import { State, Action } from 'vuex-class'
 import { ViewState } from '../types/modules/listingsTypes'
+
+
 const namespace = 'listings'
 
 @Component({
@@ -35,7 +37,12 @@ const namespace = 'listings'
 
 export default class Home extends Vue {
     @State('listings') listings!: ViewState       
-    @Action('changeView', { namespace }) changeView!: () => void;  
+    @Action('changeView', { namespace }) changeView!: (val: string) => void;  
+
+    GA(value: string) {
+      this.$ga.event({eventCategory: 'Home', eventAction: 'View Switch', eventLabel: value})
+      this.changeView(value)
+    }
 }
 
 </script>

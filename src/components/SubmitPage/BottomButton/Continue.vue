@@ -1,6 +1,6 @@
 <template>
     <div 
-        v-on="!filled ? null : {click: addProgress} "        
+        v-on="!filled ? null : {click: GA} "        
         :class="!filled ? 'mainContinue' : 'mainContinueB'"
         >                        
         <div class="textContinue">Continue</div>
@@ -9,15 +9,23 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
-import { Action } from 'vuex-class'
+import { State, Action } from 'vuex-class'
 import { HeaderState } from '@/types/modules/submitTypes'
 const namespace = "submitHeader"
 
+
+// instead of button, it's add progress
+
 @Component 
-export default class Continue extends Vue {
-    @Action('addProgress', { namespace }) addProgress!: HeaderState
+export default class Continue extends Vue {    
     @Prop() filled!: boolean
-    
+    @State('submitHeader') submitHeader!: HeaderState
+    @Action('addProgress', { namespace }) addProgress!: () => void
+
+    GA() {
+        this.$ga.event({eventCategory: 'Submit', eventAction: 'Continue', eventValue: this.submitHeader.current+1})        
+        this.addProgress()
+    }    
 }
 
 </script>
@@ -37,12 +45,16 @@ export default class Continue extends Vue {
     }
     .mainContinueB:hover {
         cursor: pointer;
+        
     }
-    
+    .mainContinueB:active {    
+        background-color: #8A8CAB;    
+    }
 .textContinue {
     margin: auto;
     color: white;
     font-size: 16px;
 }
+
 
 </style>

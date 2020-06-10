@@ -3,26 +3,28 @@
         <div class="table-body">
             <div class="table-header">
                 <div class="table-header-left">Description</div>
-                <div class="table-header-right">Amount</div>
+                <div class="table-header-right">Amount</div>                
             </div>
             <div class="table-divider"></div>
             <div class="table-content">
-                <div v-for='item in tableItems' :key="item.description">
+                <div v-for='(item,index) in tableItems' :key="`item.category-${index}`">
                     <div class="table-elem">
                         <div class="table-elem-name"> {{item.category}} </div>
-                        <div class="table-elem-amount"> {{item.amount}} </div>
-                        <img v-if="!isOpen" v-on:click="isOpen=!isOpen" class="table-elem-toggle" src="../../../assets/icons/arrow.svg"/>
-                        <img v-else v-on:click="isOpen=!isOpen" class="table-elem-toggle" style=" transform: rotate(180deg);" src="../../../assets/icons/arrow.svg"/>
+                        <div :class="!item.description? 'table-elem-b':'table-elem-amount'"> {{comma(item.amount)}} </div>
+                        <div v-if="item.description">
+                            <img v-if="!item.isOpen" v-on:click="GA(index)" class="table-elem-toggle" src="@/assets/icons/arrow.svg"/>
+                            <img v-else v-on:click="GA(index)" class="table-elem-toggle" style=" transform: rotate(180deg);" src="@/assets/icons/arrow.svg"/>
+                        </div>
                     </div>
-                    <div v-if="isOpen" class="table-elem-hidden">
-                        {{item.information}}
+                    <div v-if="item.isOpen" class="table-elem-hidden">
+                        {{item.description}}
                     </div>
                     <div class="table-elem-faintline"></div>
                 </div>
             </div>
             <div class="table-total">
                 <div class="table-total-row">
-                    Total <span class="table-total-amount">$ {{totalAmount}}</span>
+                    Total <span>{{currency}}</span> <span class="table-total-amount"> {{comma(totalAmount)}}</span>                    
                 </div>
                 <div class="table-total-divider"></div>                    
             </div>            
@@ -34,17 +36,22 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { TableList } from '../../../types/modules/individualTypes'
-// just need to plug some data and it'll be gucci to go
+
 
 @Component
 export default class Table extends Vue { 
-
-
+    @Prop() currency!: string
     @Prop() tableItems!: Array<TableList>
     @Prop() totalAmount!: number
-    @Prop({default: false}) isOpen!: boolean
-        
-    // do something to add isOpen to each individual ones
+    @Prop() isOpen!: (value: number) => void
+    @Prop() type!: string
+    @Prop() comma!: (value: number) => string   
+     
+    GA(value: number) {
+        this.$ga.event({eventCategory: 'Individual', eventAction: 'Toggle - More Info', eventLabel: `Table - ${this.type}`})
+        this.isOpen(value)
+    }       
+
 }
 
 </script>
@@ -77,9 +84,10 @@ export default class Table extends Vue {
     border-top: 1px solid #2A2C50;
 }
 .table-content {
-    max-height: 215px;    
+    max-height: 270px;    
     overflow-y: scroll;
     border-bottom: 1px solid #2A2C50;
+    
 }
 
 .table-elem {
@@ -87,11 +95,14 @@ export default class Table extends Vue {
     font-size: 16px;   
     margin: 15px auto;  
 }
+    .table-elem-b {
+        margin-right: 54px;        
+    }
     .table-elem-name {
-        margin: auto auto auto 35px;
+        margin: auto auto auto 35px;        
     }
     .table-elem-amount {
-        margin-right: 21px;
+        margin-right: 21px;        
     }
     .table-elem-toggle {
         margin-right: 20px;        
@@ -141,7 +152,7 @@ export default class Table extends Vue {
         margin: auto 5px;
     }
     .table-total-amount {
-        margin-left: 35px;
+        margin-left: 15px;
     }
     .table-total-divider {      
         margin-top: 5px;

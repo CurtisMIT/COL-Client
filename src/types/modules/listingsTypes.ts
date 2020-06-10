@@ -7,11 +7,14 @@ export interface Entries {
     earnings: string;
     expenses: string;
     quote: string;
-    tag1: string;
-    tag2: string;
+    tags: string[]
     date: string;
 }
 export interface ViewState {
-    view?: string;            
+    view?: string;
+    isTitle: boolean           
+    title: string 
+    isLocation: boolean
+    location: string
     entries: Array<Entries>
 }

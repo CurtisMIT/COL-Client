@@ -3,13 +3,19 @@
         <div class="container-body">
             <div class="container-title">Earnings</div>
             <div class="divider"></div>
-            <div class="container-elem">
+            <div v-if="individual.earnings.length !== 0 && individual.growth.length !== 0" class="container-elem">
                 <Table 
-                    :tableItems="earnings"
+                    :comma="comma"
+                    :type="'Earnings'"
+                    :currency="individual.basic[0].currency"
+                    :tableItems="individual.earnings"
                     :totalAmount="totalEarnings"
+                    :isOpen="isEarnings"
                     />
                 <Graph 
-                    :growth="growth"
+                    :comma="comma"
+                    :currency="individual.basic[0].currency"
+                    :growth="individual.growth"
                     :growthStats="growthStats"
                     />
             </div>
@@ -24,7 +30,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 import Table from './EarningsComponent/Table.vue'
 import Graph from './EarningsComponent/Graph.vue'
-import { Getter } from 'vuex-class'
+import { State, Getter, Action } from 'vuex-class'
 import { IndividualState } from '../../types/modules/individualTypes'
 const namespace = 'individual'
 
@@ -35,11 +41,14 @@ const namespace = 'individual'
     }
 })
 export default class Earnings extends Vue { 
-    @Getter('getEarnings', { namespace }) earnings!: IndividualState 
-    @Getter('getTotalEarnings', { namespace }) totalEarnings!: number
-    @Getter('getGrowth', { namespace }) growth!: IndividualState    
+    @State('individual') individual!: IndividualState
+    @Getter('getTotalEarnings', { namespace }) totalEarnings!: number    
     @Getter('getGrowthStats', { namespace }) growthStats!: IndividualState    
-
+    @Action('isEarnings', { namespace }) isEarnings!: () => void
+    
+    comma(value: number) {
+        return (value).toLocaleString('en')
+    }
     
 }
 

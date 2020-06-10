@@ -1,12 +1,36 @@
 <template>
   <div id="app">
     <div id="nav">
+      <Header/>
       <!-- <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link> -->
     </div>
     <router-view/>
   </div>
 </template>
+
+
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator'
+import Header from './components/Header/Main.vue'
+import { Action } from 'vuex-class'
+
+@Component({
+  components: {
+    Header
+  }
+})
+export default class App extends Vue {
+    @Action('listings/fetchEntries') fetchEntries!: () => void;
+    @Action('currency/fetchCurr') fetchCurr!: () => void;
+    // creating the loading one
+    mounted() {        
+        this.fetchEntries()
+        this.fetchCurr()
+    }  
+}
+
+</script>
 
 <style>
 ::-webkit-scrollbar {
@@ -23,8 +47,12 @@
 }
 a {
   color: #2A2C50;
-  text-decoration: none;
+  text-decoration: none;  
 }
+a:active {
+  color: #2A2C50;
+}
+
 body {
   margin: 0
 }
@@ -52,7 +80,7 @@ input {
   font-size: 16px;    
   height: 65px;
   width: 300px;
-  text-indent: 15px;
+  text-indent: 15px;  
   transition: border 500ms linear;
 }
   input:focus, textarea:focus {

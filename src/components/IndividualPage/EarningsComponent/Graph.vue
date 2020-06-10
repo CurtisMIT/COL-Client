@@ -25,6 +25,8 @@ export default class Graph extends Vue {
     // eslint-disable-next-line
     @Prop() growth!: IndividualState | any
     @Prop() growthStats!: number[]
+    @Prop() currency!: string
+    @Prop() comma!: (value: number) => string   
     
     mounted() {
         const maxYear = this.growthStats[0]
@@ -120,10 +122,10 @@ export default class Graph extends Vue {
             .y1(height);     
         
         // the area in its final state
-        const area = d3.area<{year: number; salary: number}>()
+        const area = d3.area<{year: number; amount: number}>()
             .x(function(d) { return x(d.year) })
             .y0(height)
-            .y1(function(d) { return y(d.salary) })  
+            .y1(function(d) { return y(d.amount) })  
 
         // fill area
         svg.append('path')
@@ -138,9 +140,9 @@ export default class Graph extends Vue {
         const initline = d3.line()
             .x(0)
             .y(height)                     
-        const finalline = d3.line<{year: number; salary: number}>()  
+        const finalline = d3.line<{year: number; amount: number}>()  
             .x(function(d){return x(d.year)})                
-            .y(function(d){return y(d.salary)})  
+            .y(function(d){return y(d.amount)})  
 
         svg.append('path')
             .datum(this.growth)
@@ -171,12 +173,12 @@ export default class Graph extends Vue {
             .style("opacity", 1)                    
         }
         // eslint-disable-next-line
-        const mousemove = function(d: any) {
+        const mousemove = (d: any) => {
             tooltip
             .html(
               `${d.title}
                 <br/>
-                $ ${d.salary}
+                ${this.currency} ${this.comma(d.amount)}
                 `
             )                          
             .style("left", (d3.event.pageX + "px"))
@@ -196,7 +198,7 @@ export default class Graph extends Vue {
                 // eslint-disable-next-line
                 .attr("cx", function(d: any){return x(d.year)})
                 // eslint-disable-next-line
-                .attr("cy", function(d: any){return y(d.salary)})
+                .attr("cy", function(d: any){return y(d.amount)})
                 .attr("r", 3.5)                
                 .attr("fill", "#24CF9A")  
                 .on('end', function() {

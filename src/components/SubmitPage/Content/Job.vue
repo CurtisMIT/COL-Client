@@ -1,13 +1,22 @@
 <template>    
     <div class="form-main-job">                
-        <div class="input-elem">
+        <div :class="!submitJob.past ? 'input-elem-first' : 'input-elem'">
             <div class="input-title">💼 Job Title</div>
             <input :class="!submitJob.past? 'input-box-first' : 'input-box-large'" 
-                 @input="typeJob({prop: 'job', $event})"
-            placeholder="e.g. Professional Napper"/>
+                v-model="submitJob.title"
+                @input="typeJob({prop: 'title', $event})"
+                @focusin="suggestOn('title')"
+                @focusout="suggestionOff('title')"
+                placeholder="e.g. Professional Napper"/>
+            <Autosuggest
+                :select="select"
+                :type="'title'"
+                :isSuggestion="isTitle"
+                :dataList="getAllTitles"
+                :input="submitJob.title"/>                
         </div>
         <div v-if="!submitJob.past" class="btn-elem-farright">
-            <div v-on:click="togglePast" class="btn-title">+ Add Past Titles</div>
+            <div v-on:click="GAPast('Past Title')" class="btn-title">+ Add Past Titles</div>
             <div class="btn-circle">
                 <div class="btn-circle-icon">?</div>
             </div>
@@ -19,41 +28,50 @@
         <div class="input-elem">
             <div class="input-title">️🏙 Industry</div>
             <input class="input-box-large" 
-                @input="typeJob({prop: 'industry', $event})"
+                v-model="submitJob.industry"
+                @input="typeJob({prop: 'industry', $event})"       
+                @focusin="suggestOn('industry')"
+                @focusout="suggestionOff('industry')"         
                 placeholder="e.g. Automotive"/>
+            <Autosuggest
+                :select="select"
+                :type="'industry'"
+                :isSuggestion="isIndustry"
+                :dataList="getAllIndustries"
+                :input="submitJob.industry"/>                  
         </div>
         <div class="input-elem">
             <div class="input-title">🗓️ Year of Experience</div>
             <div class="input-row">
-                <input :class="isNaN(submitJob.yoe)?'input-box-small wrong'  : 'input-box-small'"                                   
-                     @input="typeJob({prop: 'yoe',$event})"
+                <input :class="isNaN(submitJob.experience)?'input-box-small wrong'  : 'input-box-small'"                                   
+                     @input="typeJob({prop: 'experience',$event})"
                     placeholder="e.g. 18"/>  
                 <div class="input-unit-preset">
                     <div class="input-unit-value">years</div>
                 </div>              
             </div>   
             <transition name="fade">
-                <div v-if="isNaN(submitJob.yoe)" class="wrong-text">x please enter numerical numbers only</div>           
+                <div v-if="isNaN(submitJob.experience)" class="wrong-text">x please enter numerical numbers only</div>           
             </transition>
         </div>
-        <div class="input-elem">
+        <div class="input-elem-first">
             <div class="input-title">💰 Yearly Salary</div>
             <div class="input-row">
-                <input :class="isNaN(submitJob.salary)? 'input-box-last wrong': 'input-box-last'"                     
-                    @input="typeJob({prop: 'salary',$event})"                    
+                <input :class="isNaN(submitJob.earnings)? 'input-box-last wrong': 'input-box-last'"                     
+                    @input="typeJob({prop: 'earnings',$event})"                    
                     placeholder="e.g. 35000"/>  
-                <div v-on:click="toggleCurrency" class="input-box-toggle" tabindex="-1" @focusout="toggleCurrency">
+                <div v-on:click="GACurr" class="input-box-toggle" tabindex="-1" @focusout="toggleCurrency">
                     <div class="input-unit-valueToggle">{{currency.symbol}} {{ currency.name}}</div>
                     <img src='@/assets/icons/currency.svg' :class="!submitJob.currency ? 'input-unit-icon' : 'input-unit-iconB'"/>
                 </div>   
                 <Currency v-if="submitJob.currency"/>           
             </div>          
             <transition name="fade">
-                <div v-if="isNaN(submitJob.salary)" class="wrong-text">x please enter numerical numbers only</div>  
+                <div v-if="isNaN(submitJob.earnings)" class="wrong-text">x please enter numerical numbers only</div>  
             </transition>
         </div>   
         <div v-if="!submitJob.breakdown" class="btn-elem">
-            <div v-on:click="toggleBreakdown" class="btn-title">+ Add Breakdown</div>
+            <div v-on:click="GABReak" class="btn-title">+ Add Breakdown</div>
             <div class="btn-circle">
                 <div class="btn-circle-icon">?</div>
             </div>
@@ -63,7 +81,7 @@
             </div>
         </div>   
         <div  v-if="!submitJob.past" class="btn-elem-farright">
-            <div v-on:click="togglePast" class="btn-title">+ Add Past Salaries</div>
+            <div v-on:click="GAPast('Past Salaries')" class="btn-title">+ Add Past Salaries</div>
             <div class="btn-circle">
                 <div class="btn-circle-icon">?</div>
             </div>
@@ -75,10 +93,10 @@
         <Extra/>
         <Continue
             :filled="
-                submitJob.job 
+                submitJob.title 
                 && submitJob.industry 
-                && (submitJob.yoe!==0 && !(isNaN(submitJob.yoe)))
-                && (submitJob.salary!==0 && !(isNaN(submitJob.salary)))
+                && (submitJob.experience!==0 && !(isNaN(submitJob.experience)))
+                && (submitJob.earnings!==0 && !(isNaN(submitJob.earnings)))
                 && isBreakdown 
                 && isPast ? true : false"
         />
@@ -93,6 +111,7 @@ import { CurrencyState } from '@/types/modules/currencyTypes'
 import Continue from '../BottomButton/Continue.vue'
 import Extra from './ExtraJob/Extra.vue'
 import Currency from './ExtraJob/Currency.vue'
+import Autosuggest from '../Autosuggest/Autosuggest.vue'
 
 
 const namespace = "submitJob"
@@ -101,7 +120,8 @@ const namespace = "submitJob"
     components: {
         Continue,
         Extra,
-        Currency
+        Currency,
+        Autosuggest
     }
 })
 
@@ -110,20 +130,44 @@ export default class Job extends Vue {
     @State('currency') currency!: CurrencyState
     @Getter('isBreakdown', { namespace }) isBreakdown!: JobState
     @Getter('isPast', { namespace }) isPast!: JobState
+    @Getter('listings/getAllTitles') getAllTitles !: string[]
+    @Getter('listings/getAllIndustries') getAllIndustries !: string[]
+    @Action('select', { namespace }) select !: () => void;
     @Action('typeJob', { namespace }) typeJob!: () => void
     @Action('toggleBreakdown', { namespace }) toggleBreakdown!: () => void
     @Action('togglePast', { namespace }) togglePast!: () => void
     @Action('toggleCurrency', { namespace }) toggleCurrency!: () => void
 
-    // mounted() {
-    //     document.addEventListener('click', this.clickOutside)
-    // }
+    private isTitle = false
+    private isIndustry = false
 
-    // clickOutside() {
-    //     if (this.submitJob.currency) {
-    //         this.toggleCurrency()
-    //     }
-    // }
+    suggestOn(type: string) {
+        if (type === "title") {
+            this.isTitle = true
+        } else if (type === "industry") {
+            this.isIndustry = true
+        }
+    }
+    suggestionOff(type: string) {
+        if (type === "title") {
+            this.isTitle = false
+        } else if (type === "industry") {
+            this.isIndustry = false
+        }
+    }    
+
+    GAPast(value: string) {
+        this.$ga.event({eventCategory: 'Submit', eventAction: 'Add', eventLabel: value})
+        this.togglePast()
+    }
+    GABReak() {
+        this.$ga.event({eventCategory: 'Submit', eventAction: 'Add', eventLabel: 'Breakdown'})
+        this.toggleBreakdown()
+    }    
+    GACurr() {
+        this.$ga.event({eventCategory: 'Submit', eventAction: 'Toggle', eventLabel: 'Currency'})
+        this.toggleCurrency()
+    }
 }
 
 </script>
@@ -146,16 +190,23 @@ export default class Job extends Vue {
 .input-elem {
     display: flex;
     flex-direction: column;
-    margin: auto;             
+    margin: auto;       
+    /* border: 1px solid black; */
+    padding-bottom: 45px;      
 }
+    .input-elem-first {
+        display: flex;
+        flex-direction: column;
+        margin: auto;     
+    }
     .input-title {
         text-align: left;        
         font-size: 20px;
         font-weight: bold;        
     }
     .input-box-large, .input-box-small, .input-box-first, .input-box-last {
-        margin-top: 0px;        
-        margin-bottom: 45px;                
+        margin-top: 5px;        
+        /* margin-bottom: 45px;                 */
     }    
     .input-box-last, .input-box-first {
         margin-bottom: 5px;

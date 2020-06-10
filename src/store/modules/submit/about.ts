@@ -2,22 +2,43 @@ import { Module, ActionTree, MutationTree, GetterTree } from 'vuex';
 import { AboutState } from '@/types/modules/submitTypes'
 import { RootState } from '@/types' 
 
-const state: AboutState = {
-    description: '',
-    tag: '',
-    tagList: [],
+const getDefaultAbout = () => {
+    return {
+        description: "",
+        location: "",
+        tag: '',
+        tagList: [],
+    }
 }
-const getters: GetterTree<AboutState, RootState> = {
 
-}
+const state = getDefaultAbout()
+
+const getters: GetterTree<AboutState, RootState> = {}
+
 const mutations: MutationTree<AboutState> = {
+    // reset
+    resetAbout(state) {
+        Object.assign(state, getDefaultAbout())
+    },
     // about
-    typeDescription(state, event) {
-        state.description = event.target.value
+    select(state, payload) {
+        const { prop, value } = payload 
+        if (prop === "location") {
+            state.location = value
+        } else {
+            state.tag = value
+        }
     },
-    typeTag (state, event) {
-        state.tag = event.target.value
-    },
+    typeAbout(state, payload) {
+        const { prop, $event } = payload
+        if (prop === "description") {
+            state.description = $event.target.value
+        } else if (prop === "location") {
+            state.location = $event.target.value
+        } else {
+            state.tag = $event.target.value
+        }
+    }, 
     addTag (state) {
         state.tagList = [...state.tagList, state.tag]
         state.tag = ""
@@ -28,15 +49,15 @@ const mutations: MutationTree<AboutState> = {
                 state.tagList.splice(i, 1)
             }
         }
-    },
+    }
 }
 const actions: ActionTree<AboutState, RootState> = {
     // about
-    typeDescription({ commit}, event) {
-        commit('typeDescription', event)
+    select({ commit }, payload) {
+        commit('select', payload)
     },
-    typeTag({ commit }, event) {
-        commit('typeTag', event)
+    typeAbout({ commit }, payload) {
+        commit('typeAbout', payload)
     },
     addTag({ commit }) {
         commit('addTag')
@@ -44,6 +65,10 @@ const actions: ActionTree<AboutState, RootState> = {
     removeTag({ commit}, target) {
         commit('removeTag', target)
     },
+    resetAbout({ commit }) {
+        commit('resetAbout')
+    }
+
 }
 const namespaced = true
 
@@ -53,4 +78,5 @@ export const submitAbout: Module<AboutState, RootState> = {
     getters,
     actions,
     mutations
+    
 }

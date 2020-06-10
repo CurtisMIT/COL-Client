@@ -2,9 +2,14 @@ import { Module, ActionTree, MutationTree, GetterTree } from 'vuex';
 import { ExpenseState } from '@/types/modules/submitTypes'
 import { RootState } from '@/types/index' 
 
-const state: ExpenseState = {
-    expenseList: []
+const getDefaultExpense = () => {
+    return {
+        expenseList: []
+    }
 }
+
+const state = getDefaultExpense()
+
 const getters: GetterTree<ExpenseState, RootState> = {
     getTotal(state) {
         let total = 0
@@ -27,6 +32,10 @@ const getters: GetterTree<ExpenseState, RootState> = {
     }
 }
 const mutations: MutationTree<ExpenseState> = {    
+    // reset
+    resetExpense(state) {
+        Object.assign(state, getDefaultExpense())
+    },
     typeExpense(state, payload) {
         const { index, prop, $event} = payload        
         if (prop === "category") {
@@ -47,6 +56,10 @@ const mutations: MutationTree<ExpenseState> = {
 
 }
 const actions: ActionTree<ExpenseState, RootState> = {    
+    // reset
+    resetExpense({ commit }) {
+        commit('resetExpense')
+    },
     initTemplate({ commit }) {
         commit('addExpense')
         commit('addExpense')

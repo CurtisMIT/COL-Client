@@ -5,9 +5,9 @@
                 <Job/>  
                 <Location/>                   
             </div>   
-            <div>
+            <!-- <div>
                 <MoreFilters/>
-            </div>          
+            </div>           -->
         </div>     
     </div>
 </template>
@@ -40,7 +40,7 @@ export default class FilterBox extends Vue {
     display: flex;
     flex-direction: column;
     margin: auto;
-    height: 207px;
+    height: 167px;
     width: 768px;
     background-color: #F8F8FB;    
     border-radius: 10px;    

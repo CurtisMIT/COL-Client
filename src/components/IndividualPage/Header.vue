@@ -1,21 +1,23 @@
 <template>
     <div class="header">
-        <div class="header-body">
+        <div v-if="individual.basic.length !== 0" class="header-body">
             <div class="header-title-top">
-                {{basic.title}}
+                {{individual.basic[0].title}}
                 <span class="header-title-dot">·</span>
-                <span class="header-title-smallWeight"> {{basic.experience}} years</span>
-                <span class="header-title-lightColor">Submitted on {{basic.date}}</span>
+                <span class="header-title-smallWeight"> {{individual.basic[0].experience}} years</span>
+                <span class="header-title-lightColor">Submitted on {{individual.basic[0].created_at}}</span>
             </div>
             <div class="header-container-tag">
-                <div class="container-elem-tag">🏠  {{basic.location}}</div>
-                <div class="container-elem-tag">🏙  {{basic.industry}}</div>
+                <div class="container-elem-tag">🏠  {{individual.basic[0].location}}</div>
+                <div class="container-elem-tag">🏙  {{individual.basic[0].industry}}</div>
             </div>
-            <div class="header-container-quote"> {{basic.quote}} </div>
+            <div class="header-container-quote"> "{{individual.basic[0].quote}}" </div>
             <div class="header-container-tag">
-                <div class="container-elem-tag" style="backgroundColor: #FAE0D4">✈️  {{basic.tag[0]}}</div>
-                <div class="container-elem-tag" style="backgroundColor: #D8E7E2">🥘  {{basic.tag[1]}}</div>
-                <div class="container-elem-tag" style="backgroundColor: #F5D5E5">🍸️ {{basic.tag[2]}}</div>
+                <div class="container-elem-tag" style="backgroundColor: #FAE0D4">{{individual.basic[0].tags[0]}}</div>
+                <div v-if="individual.basic[0].tags[1]" class="container-elem-tag" style="backgroundColor: #D8E7E2">{{individual.basic[0].tags[1]}}</div>
+                <div v-if="individual.basic[0].tags[2]" class="container-elem-tag" style="backgroundColor: #F5D5E5">{{individual.basic[0].tags[2]}}</div>
+                <div v-if="individual.basic[0].tags[3]" class="container-elem-tag" style="backgroundColor: #D7E4F0">{{individual.basic[0].tags[3]}}</div>
+                <div v-if="individual.basic[0].tags[4]" class="container-elem-tag" style="backgroundColor: #F5EAD5">{{individual.basic[0].tags[4]}}</div>
             </div>
         </div>
     </div>
@@ -23,15 +25,14 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { Getter } from 'vuex-class'
+import { State } from 'vuex-class'
 import { IndividualState } from '../../types/modules/individualTypes'
-const namespace = 'individual'
+// const namespace = 'individual'
 
 @Component
 export default class Header extends Vue { 
-    // @State('individual') individual!: IndividualState
-    // use getter, no need to pull all state info
-    @Getter('getBasic', { namespace }) basic!: IndividualState   
+    @State('individual') individual!: IndividualState    
+    
 }
 
 </script>

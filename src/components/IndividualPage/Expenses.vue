@@ -3,12 +3,18 @@
         <div class="container-body">
             <div class="container-header">Expenses</div>
             <div class="divider"></div>
-            <div class="container-elem">
+            <div v-if="individual.expenses.length !== 0" class="container-elem">
                 <Table
-                    :tableItems="expenses"
-                    :totalAmount="totalExpenses"/>    
-                <Pie
-                    :tableItems="expenses"
+                    :comma="comma"
+                    :type="'Expenses'"
+                    :currency="individual.basic[0].currency"
+                    :tableItems="individual.expenses"
+                    :totalAmount="totalExpenses"
+                    :isOpen="isExpenses"/>    
+                <Pie v-if="individual.expenses.length !== 0"
+                    :comma="comma"
+                    :currency="individual.basic[0].currency"
+                    :tableItems="individual.expenses"
                     :totalAmount="totalExpenses"
                 />            
             </div>
@@ -23,7 +29,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 import Table from './EarningsComponent/Table.vue'
 import Pie from './ExpensesComponent/Pie.vue'
-import { Getter } from 'vuex-class'
+import { State, Getter, Action } from 'vuex-class'
 import { IndividualState } from '../../types/modules/individualTypes'
 const namespace = 'individual'
 
@@ -36,8 +42,12 @@ const namespace = 'individual'
     }
 })
 export default class Expenses extends Vue { 
-    @Getter('getExpenses', { namespace}) expenses!: IndividualState
+    @State('individual') individual!: IndividualState    
     @Getter('getTotalExpenses', { namespace }) totalExpenses!: number
+    @Action('isExpenses', { namespace }) isExpenses!: () => void
+    comma(value: number) {
+        return (value).toLocaleString('en')
+    }    
 }
 
 </script>

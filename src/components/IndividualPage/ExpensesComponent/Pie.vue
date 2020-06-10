@@ -18,7 +18,9 @@ const radius = Math.min(width, height)/2
 export default class Pie extends Vue { 
     // eslint-disable-next-line 
     @Prop() tableItems!: Array<TableList> | any
-    @Prop() totalAmount!: number    
+    @Prop() totalAmount!: number   
+    @Prop() currency!: string 
+    @Prop() comma!: (value: number) => string   
 
     mounted() {
 
@@ -31,7 +33,7 @@ export default class Pie extends Vue {
 
         // set the color scale
         const color = d3.scaleOrdinal()            
-            .range(["#3D4857", "#FC7D58", "#22B0FC", "#7557E5", "#a05d56"])
+            .range(["#3ECF8B", "#246FB4", "#E56767", "#E5B367", "#A075D6", "#CF7B3E"])
 
 //         // Compute the position of each group on the pie:
         const arc = d3.arc()
@@ -79,15 +81,15 @@ export default class Pie extends Vue {
             .style('fill', '#2A2C50') 
             .style("stroke-width", '0')        
             .attr('y', '25px')  
-            .text(`$ ${this.totalAmount}`)  
+            .text(`${this.currency} ${this.comma(this.totalAmount)}`)  
             
         // will need to set a limit on number of characters    
         // legend        
         const legend = d3.select('#expensePie')
             .append("svg")
             .attr("class", "legend")            
-            .style('max-width', '165px')
-            .style('margin', 'auto 0px auto auto')                                                                                           
+            .style('max-width', '165px')            
+            .style('margin', 'auto 0px auto auto')                
             .selectAll("g")            
             .data(this.tableItems)
             .enter().append("g")            

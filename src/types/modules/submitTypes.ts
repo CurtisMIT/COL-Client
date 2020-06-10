@@ -8,15 +8,16 @@ export interface HeaderState {
 
 export interface AboutState {
     description: string
+    location: string
     tag: string
     tagList: string[]
 }
 
 export interface JobState {
-    job: string
+    title: string
     industry: string
-    yoe: number
-    salary: number
+    experience: number
+    earnings: number
     currency: boolean
     breakdown: boolean
     past: boolean
@@ -25,12 +26,12 @@ export interface JobState {
 }
     // breakdown + past interface
     export interface Info {
-        job: string, 
+        title: string, 
         year: number,
         amount: number
     }
     export interface Salary {
-        type: string
+        category: string
         amount: number
         description?: string
     }

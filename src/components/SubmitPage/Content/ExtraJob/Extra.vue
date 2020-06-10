@@ -11,8 +11,8 @@
                     </div>                
                     <div class="input-elem-column">
                         <div class="input-title-small">Type</div>
-                        <input @input="typeBreakdown({index, prop: 'type', $event})" 
-                            v-model="entry.type"
+                        <input @input="typeBreakdown({index, prop: 'category', $event})" 
+                            v-model="entry.category"
                             class="input-box-typeSize"                             
                             placeholder="e.g Bonus"/>
                     </div>
@@ -33,7 +33,7 @@
                     class="textarea" 
                     placeholder="Add description (Optional) ..."/>
             </div>
-            <div v-on:click="toggleBreakdown" class="btn-text-end">Remove Section</div>
+            <div v-on:click="GABReak" class="btn-text-end">Remove Section</div>
         </div>  
         </transition> 
         <transition name="fade">   
@@ -49,8 +49,8 @@
                         <div class="input-title-small">Job Title</div>
                         <input class="input-box-largeBot" 
                             placeholder="e.g. Jr. Professional Napper"
-                            v-model="entry.job"
-                            @input="typePast({index, prop: 'job', $event})"
+                            v-model="entry.title"
+                            @input="typePast({index, prop: 'title', $event})"
                             />
                     </div>                                     
                 </div>       
@@ -77,7 +77,7 @@
                     </div>   
                 </div>   
             </div>
-            <div v-on:click="togglePast" class="btn-text-end">Remove Section</div>  
+            <div v-on:click="GAPast" class="btn-text-end">Remove Section</div>  
         </div>  
         </transition>                            
     </div>
@@ -97,17 +97,26 @@ export default class Job extends Vue {
     @Action('typeBreakdown', { namespace }) typeBreakdown!: JobState
     @Action('addBreakdown', { namespace }) addBreakdown!: JobState
     @Action('delBreakdown', { namespace }) delBreakdown!: JobState
-    @Action('toggleBreakdown', { namespace }) toggleBreakdown!: JobState
+    @Action('toggleBreakdown', { namespace }) toggleBreakdown!: () => void
 
     @Action('typePast', { namespace }) typePast!: JobState
     @Action('addPast', { namespace }) addPast!: JobState
     @Action('delPast', { namespace }) delPast!: JobState    
-    @Action('togglePast', { namespace }) togglePast!: JobState
+    @Action('togglePast', { namespace }) togglePast!: () => void
 
     mounted() {              
         const textarea = document.querySelectorAll(".textarea");           
         autosize(textarea)
     }
+
+    GAPast() {
+        this.$ga.event({eventCategory: 'Submit', eventAction: 'Remove', eventLabel: 'Past Info'})
+        this.togglePast()
+    }
+    GABReak() {
+        this.$ga.event({eventCategory: 'Submit', eventAction: 'Remove', eventLabel: 'Breakdown'})
+        this.toggleBreakdown()
+    }    
 }
 
 </script>

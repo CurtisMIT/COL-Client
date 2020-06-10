@@ -1,40 +1,61 @@
 <template>
     <div class="container-main">
-        <div class="container-outline" v-for="entry in listings.entries" :key="entry.id">
-            <router-link :to="`/individual/${entry.id}`" >
-                <div class="container-content">                
-                    <div class="container-header">                    
-                        <div class="container-header-title">{{entry.title}}</div>                    
-                        <div class="container-header-subtitle">Experience: <span style="fontWeight: 500">{{entry.experience}} years</span></div>                    
-                    </div>          
-                    <div class="container-elem">
-                        <div class="container-elem-border">🏠 {{entry.location}}</div>                
-                        <div class="container-elem-border">🏙 {{entry.industry}}</div>                
-                    </div>      
-                    <div class="container-elem-money">                    
-                        <div class="container-elem-noborder">Earnings: <span style="fontWeight: 500">{{entry.earnings}}</span></div>                    
-                        <div class="container-elem-noborder">Expenses: <span style="fontWeight: 500">{{entry.expenses}}</span></div>
-                    </div>       
-                    <div class="container-elem-quote">“{{entry.quote}}“</div>         
-                    <div class="container-row">
-                        <div class="container-row-tag1">{{entry.tag1}}</div>
-                        <div class="container-row-tag2">{{entry.tag2}}</div>
-                    </div>
-                    <div class="container-bottom-date">{{entry.date}}</div>                
-                </div>            
-            </router-link>
+        <Loading v-if="listings.length === 0"/>
+        <div v-else class="container-main">
+            <div class="container-outline" v-for="entry in listings" :key="entry.id">
+                <router-link :to="`/individual/${entry.individual_id}`" >
+                    <div v-on:click="GA(`${entry.individual_id}-${entry.title}`)" class="container-content">                
+                        <div class="container-header">                    
+                            <div class="container-header-title">{{shorten(entry.title, 30)}}</div>                    
+                            <div class="container-header-subtitle">Experience: <span style="fontWeight: 500">{{entry.experience}} years</span></div>                    
+                        </div>          
+                        <div class="container-elem">
+                            <div class="container-elem-border">🏠 {{entry.location}}</div>                
+                            <div class="container-elem-border">🏙 {{entry.industry}}</div>                
+                        </div>      
+                        <div class="container-elem-money">                    
+                            <div class="container-elem-noborder">Earnings: <span style="fontWeight: 500">{{comma(entry.earnings)}} {{entry.currency}}</span></div>                    
+                            <div class="container-elem-noborder">Expenses: <span style="fontWeight: 500">{{comma(entry.expenses)}} {{entry.currency}}</span></div>
+                        </div>       
+                        <div class="container-elem-quote">“{{shorten(entry.quote, 62)}}“</div>         
+                        <div class="container-row">
+                            <div class="container-row-tag1">{{entry.tags[0]}}</div>
+                            <!-- <div class="container-row-tag2">{{entry.tags[1]}}</div> -->
+                        </div>
+                        <div class="container-bottom-date">{{entry.created_at}}</div>                
+                    </div>            
+                </router-link>
+            </div>
         </div>
     </div>
 </template>
 
-<script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import { State } from 'vuex-class'
+<script lang="ts"> 
+import { Component, Vue, Prop } from 'vue-property-decorator';
 import { ViewState } from '../../../types/modules/listingsTypes'
+import Loading from './GridLoading.vue'
 
-@Component
+@Component({
+    components: {
+        Loading
+    }
+})
 export default class Grid extends Vue {       
-    @State('listings') listings!: ViewState 
+    @Prop() listings!: ViewState 
+    @Prop() type!: string
+
+    shorten(target: string, size: number) {
+        if (target.length > size) {
+            return target.substring(0, size) + "..."
+        }
+        return target
+    }    
+    GA(value: string) {
+        this.$ga.event({eventCategory: 'Home', eventAction: `${this.type} - Grid`, eventLabel: value})
+    }
+    comma(value: number) {
+        return (value).toLocaleString('en')
+    }
 }
 </script>
 
@@ -52,7 +73,7 @@ export default class Grid extends Vue {
     width: 328px;
     border: 1.5px solid #BFC1DA;
     border-radius: 10px;    
-    transition: border ease-out 500ms;
+    transition: border ease-out 500ms;        
 }
     .container-outline:hover {
         border: 1.5px solid #2A2C50;
@@ -71,7 +92,9 @@ export default class Grid extends Vue {
     }
         .container-header-title{
             margin-right: auto;
-            font-size: 24px;            
+            font-size: 24px;      
+            text-align: left;
+            /* border: 1px dotted black       */
         }
         .container-header-subtitle, .container-header-title{
             margin: 8px auto auto 0px;            

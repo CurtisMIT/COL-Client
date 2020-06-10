@@ -2,18 +2,22 @@ import { Module, ActionTree, MutationTree, GetterTree } from 'vuex';
 import { JobState } from '@/types/modules/submitTypes'
 import { RootState } from '@/types' 
 
-const state: JobState = {    
-    job: '',
-    industry: '',
-    yoe: 0,
-    salary: 0,
-    currency: false,
-    breakdown: false,
-    past: false,
-    breakdownList: [],
-    pastList: [],
-
+const getDefaultJob = () => {
+    return {
+        title: '',
+        industry: '',
+        experience: 0,
+        earnings: 0,
+        currency: false,
+        breakdown: false,
+        past: false,
+        breakdownList: [],
+        pastList: [],        
+    }
 }
+
+const state = getDefaultJob()
+
 const getters: GetterTree<JobState, RootState> = {
     // confirm if breakdown is filled
     isBreakdown(state) {
@@ -22,7 +26,7 @@ const getters: GetterTree<JobState, RootState> = {
         } else {
             // check if each are filled in
             for (const entry of state.breakdownList) {
-                if (!entry.type || (entry.amount == 0 || isNaN(entry.amount))) {
+                if (!entry.category || (entry.amount == 0 || isNaN(entry.amount))) {
                     return false
                 }
             }
@@ -35,7 +39,7 @@ const getters: GetterTree<JobState, RootState> = {
             return true
         } else {
             for (const entry of state.pastList){
-                if (!entry.job || (entry.year == 0 || isNaN(entry.year)) || (entry.amount == 0 || isNaN(entry.amount))){ 
+                if (!entry.title || (entry.year == 0 || isNaN(entry.year)) || (entry.amount == 0 || isNaN(entry.amount))){ 
                     return false
                 }
             }
@@ -44,27 +48,39 @@ const getters: GetterTree<JobState, RootState> = {
     } 
 }
 const mutations: MutationTree<JobState> = {
+    // reset
+    resetJob(state) {
+        Object.assign(state, getDefaultJob())
+    },
+    select(state, payload) {
+        const { prop, value } = payload 
+        if (prop === "title") {
+            state.title = value
+        } else {
+            state.industry = value
+        }
+    },    
     toggleCurrency(state) {
         state.currency = !state.currency
     },
     // typing 
     typeJob (state, payload) {
         const { prop, $event } = payload  
-        if (prop === "job") {
-            state.job = $event.target.value
+        if (prop === "title") {
+            state.title = $event.target.value
         } else if (prop === "industry") {
             state.industry = $event.target.value
-        } else if (prop === "yoe") {
+        } else if (prop === "experience") {
             if (isNaN($event.target.value)) {
-                state.yoe = $event.target.value
+                state.experience = $event.target.value
             } else {
-                state.yoe = parseFloat($event.target.value)
+                state.experience = parseFloat($event.target.value)
             }                        
-        } else if (prop === "salary") {
+        } else if (prop === "earnings") {
             if (isNaN($event.target.value)) {
-                state.salary = $event.target.value
+                state.earnings = $event.target.value
             } else {
-                state.salary = parseFloat($event.target.value)
+                state.earnings = parseFloat($event.target.value)
             }            
         }
     },
@@ -72,7 +88,7 @@ const mutations: MutationTree<JobState> = {
         state.breakdown = !state.breakdown
     },
     addBreakdown(state) {
-        const entry = {type: '', amount: 0, description: ''}
+        const entry = {category: '', amount: 0, description: ''}
         state.breakdownList = [...state.breakdownList, entry]
     },
     delBreakdown(state, target) {        
@@ -87,8 +103,8 @@ const mutations: MutationTree<JobState> = {
     },
     typeBreakdown(state, payload){
         const { index, prop, $event } = payload             
-        if (prop === 'type') {
-            state.breakdownList[index].type = $event.target.value    
+        if (prop === 'category') {
+            state.breakdownList[index].category = $event.target.value    
         } else if (prop === 'amount') {
             state.breakdownList[index].amount = $event.target.valueAsNumber
         } else {
@@ -99,7 +115,7 @@ const mutations: MutationTree<JobState> = {
         state.past = !state.past
     },
     addPast (state) {
-        const entry = {job: '', year: 0, amount: 0}
+        const entry = {title: '', year: 0, amount: 0}
         console.log(state.pastList)
         state.pastList = [...state.pastList, entry]
     },
@@ -115,8 +131,8 @@ const mutations: MutationTree<JobState> = {
     },
     typePast (state, payload) {
         const { index, prop, $event } = payload             
-        if (prop === 'job') {
-            state.pastList[index].job = $event.target.value    
+        if (prop === 'title') {
+            state.pastList[index].title = $event.target.value    
         } else if (prop === 'year') {
             state.pastList[index].year = $event.target.valueAsNumber
         } else {
@@ -125,7 +141,14 @@ const mutations: MutationTree<JobState> = {
     }
 }
 const actions: ActionTree<JobState, RootState> = {
+    // reset
+    resetJob({ commit }) {
+        commit('resetJob')
+    },
     // job
+    select({ commit }, payload) {
+        commit('select', payload)
+    },
     toggleCurrency({ commit }) {
         commit('toggleCurrency')
     },

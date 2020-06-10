@@ -21,6 +21,8 @@ export default class Graph extends Vue {
     // eslint-disable-next-line
     @Prop() marketCOL!: IndividualState | any
     @Prop() marketCOLMax!: number[]
+    @Prop() comma!: (value: number) => string       
+
     mounted() {
         const maxYear = this.marketCOLMax[0]
         const maxCOL = this.marketCOLMax[1]
@@ -69,7 +71,6 @@ export default class Graph extends Vue {
             xAxis.selectAll('text')
                 .style("stroke", '#2A2C50')
                 .style("stroke-width", '0.1')
-
         // y val
         const y = d3.scaleLinear()
             .domain([0, maxCOL])
@@ -110,14 +111,14 @@ export default class Graph extends Vue {
             .style("opacity", 1)
         }
         // eslint-disable-next-line
-        const mousemove = function(d: any) {
+        const mousemove = (d: any) => {
             tooltip            
             .html(
                 `💼: ${d.title} 
                 <br/>
-                ⌛: ${d.year} years 
+                ⌛: ${d.experience} years 
                 <br/>
-                💸: ${d.col}`
+                💸: ${this.comma(d.expenses)}`
             )      
             .style("left", (d3.event.pageX+15 + "px"))
             .style("top", (d3.event.pageY-15 + "px"))      
@@ -130,9 +131,9 @@ export default class Graph extends Vue {
             .enter()            
             .append("circle")   
             // eslint-disable-next-line             
-            .attr("cx", function(d: any) {return x(d.year)})
+            .attr("cx", function(d: any) {return x(d.experience)})
             // eslint-disable-next-line    
-            .attr("cy", function (d: any) { return y(d.col)} )                    
+            .attr("cy", function (d: any) { return y(d.expenses)} )                    
             .attr("r", 3.5)
             .style("fill", "#24CF9A")
             .on("mouseover", mouseover )
@@ -157,9 +158,9 @@ export default class Graph extends Vue {
             .delay(function(d,i){return(i*100)})
             .duration(2000)
             // eslint-disable-next-line    
-            .attr("cx", function (d: any) { return x(d.year); } )
+            .attr("cx", function (d: any) { return x(d.experience); } )
             // eslint-disable-next-line    
-            .attr("cy", function (d: any) { return y(d.col); } ) 
+            .attr("cy", function (d: any) { return y(d.expenses); } ) 
             .on('end', function() {
                 d3.select(this)
                 .on("mouseover", mouseover )                    

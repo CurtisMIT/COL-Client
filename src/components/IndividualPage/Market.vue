@@ -3,13 +3,15 @@
         <div class="container-body">
             <div class="container-header">Market in X Area</div>
             <div class="divider"></div>
-            <div class="container-elem">                
-                <Graph
-                    :marketSalary="marketSalary"
+            <div v-if="individual.market.length !== 0" class="container-elem">                
+                <Graph                    
+                    :comma="comma"
+                    :marketSalary="individual.market"
                     :marketSalaryMax="marketSalaryMax"
                 />       
                 <COLGraph
-                    :marketCOL="marketCOL"
+                    :comma="comma"
+                    :marketCOL="individual.market"
                     :marketCOLMax="marketCOLMax"
                 />         
             </div>
@@ -24,7 +26,7 @@
 import { Component, Vue } from 'vue-property-decorator'
 import Graph from './MarketComponent/SalaryGraph.vue'
 import COLGraph from './MarketComponent/COLGraph.vue'
-import { Getter } from 'vuex-class'
+import { State, Getter } from 'vuex-class'
 import { IndividualState } from '../../types/modules/individualTypes'
 const namespace = 'individual'
 
@@ -34,11 +36,15 @@ const namespace = 'individual'
         COLGraph
     }
 })
-export default class Expenses extends Vue { 
-    @Getter('getMarketSalary', { namespace }) marketSalary!: IndividualState
+export default class Market extends Vue { 
+    @State('individual') individual!: IndividualState    
     @Getter('getMaxMarketSalary', { namespace }) marketSalaryMax!: IndividualState
     @Getter('getMarketCOL', { namespace }) marketCOL!: IndividualState
     @Getter('getMaxMarketCOL', { namespace }) marketCOLMax!: IndividualState
+    
+    comma(value: number) {
+        return (value).toLocaleString('en')
+    }    
 }
 
 </script>

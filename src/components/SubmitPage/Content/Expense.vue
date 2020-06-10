@@ -4,9 +4,9 @@
             <div v-on:click="test = !test" class="header-title">Total</div>
             <div class="header-sub">
                 <transition name="slide-fade-up" mode="out-in">
-                    <div :key="getTotal" class="header-amount">{{getTotal}}</div>
+                    <div :key="getTotal" class="header-amount">{{comma(getTotal)}}</div>
                 </transition>
-                <div class="header-currency">$ USD</div>
+                <div class="header-currency"> {{currency.symbol}} {{currency.name}}</div>
             </div>
         </div>
 
@@ -18,8 +18,8 @@
             <div v-for="(entry, index) in submitExpense.expenseList" :key="`entry-${index}`" class="input-elem-appear">
                 <div class="btn-elem-outside">
                     <div class="btn-elem-column">
-                        <div v-on:click="addExpense" :class="submitExpense.expenseList.length>1 ?'btn-icon-add' : 'btn-icon-addB'">+</div>
-                        <div v-if="submitExpense.expenseList.length>1" v-on:click="delExpense(index)" class="btn-icon-del">-</div>
+                        <div v-if="submitExpense.expenseList.length<=5" v-on:click="GAAdd" :class="submitExpense.expenseList.length>1 ?'btn-icon-add' : 'btn-icon-addB'">+</div>
+                        <div v-if="submitExpense.expenseList.length>1" v-on:click="GADel(index)" :class="submitExpense.expenseList.length<=5? 'btn-icon-del': 'btn-icon-delB'">-</div>
                     </div>                
                     <div class="input-elem-column">                        
                         <input 
@@ -55,6 +55,7 @@ import { Component, Vue } from 'vue-property-decorator'
 import { State, Getter, Action } from 'vuex-class'
 import autosize from 'autosize'
 import { ExpenseState } from '@/types/modules/submitTypes'
+import { CurrencyState } from '@/types/modules/currencyTypes'
 import Submit from '../BottomButton/Submit.vue'
 
 const namespace = "submitExpense"
@@ -66,18 +67,30 @@ const namespace = "submitExpense"
 })
 export default class Expense extends Vue {    
     @State('submitExpense') submitExpense!: ExpenseState
+    @State('currency') currency!: CurrencyState
     @Getter('getTotal', { namespace}) getTotal!: ExpenseState
     @Getter('isFilled', { namespace }) isFilled!: boolean
     @Action('initTemplate', { namespace }) initTemplate!: () => void
     @Action('typeExpense', { namespace }) typeExpense!: () => void
     @Action('addExpense', { namespace }) addExpense!: () => void
-    @Action('delExpense', { namespace }) delExpense!: () => void
+    @Action('delExpense', { namespace }) delExpense!: (value: number) => void
     
     mounted() {
         const textarea = document.querySelectorAll(".textarea");           
         autosize(textarea)    
-        this.initTemplate()
-        
+        this.initTemplate()        
+    }    
+
+    GAAdd() {
+        this.$ga.event({eventCategory: 'Submit', eventAction: 'Add', eventLabel: 'Expense'})
+        this.addExpense()
+    }
+    GADel(value: number) {
+        this.$ga.event({eventCategory: 'Submit', eventAction: 'Delete', eventLabel: 'Expense'})
+        this.delExpense(value)
+    }
+    comma(value: number) {
+        return (value).toLocaleString('en')
     }    
 }
 
@@ -185,7 +198,7 @@ export default class Expense extends Vue {
             height: 65px;
                       
         }
-            .btn-icon-add, .btn-icon-del, .btn-icon-addB{
+            .btn-icon-add, .btn-icon-del, .btn-icon-addB, .btn-icon-delB{
                 font-size: 20px;
                 font-weight: bold;
                 margin: auto auto 0px;                
@@ -194,7 +207,11 @@ export default class Expense extends Vue {
                 font-size: 22px;
                 margin-top: -7.5px;                
             }
-            .btn-icon-add:hover, .btn-icon-del:hover, .btn-icon-addB {
+            .btn-icon-delB {
+                font-size: 22px;
+                margin-top: 15px;
+            }
+            .btn-icon-add:hover, .btn-icon-del:hover, .btn-icon-addB, .btn-icon-delB:hover {
                 cursor: pointer;
             }
             .btn-icon-addB { 

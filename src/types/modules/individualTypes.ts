@@ -2,6 +2,8 @@ export interface Basic {
     date: string,
     title: string,
     experience: number,
+    earnings: number,
+    expenses: number,
     location: string,
     industry: string,
     quote: string,
@@ -11,12 +13,13 @@ export interface Basic {
 export interface TableList {
     category: string,
     amount: number,
-    information?: string  
+    description?: string,
+    isOpen?: boolean
 }
 
 export interface Growth {
     title: string
-    salary: number,
+    amount: number,
     year: number,        
 }
 
@@ -33,13 +36,31 @@ export interface MarketCOL {
     year: number,    
 }
 
+export interface Market {
+    title: string
+    earnings: number
+    expenses: number
+    experience: number
+}
+
+export interface Listings {
+    individual_id: number;
+    title: string;
+    experience: number;
+    location: string;
+    industry: string;
+    earnings: string;
+    expenses: string;
+    quote: string;
+    tags: string[]
+    date: string;
+}
 
 export interface IndividualState {
-    basic?: Basic | object
+    basic: Basic[]
     earnings: Array<TableList>
     growth: Array<Growth>
     expenses: Array<TableList>
-    marketSalary: Array<MarketSalary>
-    marketCOL: Array<MarketCOL>
-    location: string,        
+    market: Array<Market>    
+    others: Array<Listings>    
 }
