@@ -4,7 +4,7 @@ import { RootState } from '../../types'
 import router from '@/router/index'
 import Axios from 'axios'
 
-const URL = `http://localhost:5000/individual`
+const URL = process.env.VUE_APP_URL + "/individual"
 
 
 const getDefaultIndividual = () => {
