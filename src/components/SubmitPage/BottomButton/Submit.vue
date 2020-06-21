@@ -32,7 +32,7 @@ export default class Submit extends Vue {
     submit() {     
         axios({
             method: 'post',
-            url: "http://localhost:5000/post/profile",
+            url: process.env.VUE_APP_URL + "/post/profile",
             data: {
                 // profile
                 id: 2035,

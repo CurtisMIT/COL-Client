@@ -2,7 +2,7 @@ import { Module, ActionTree, MutationTree, GetterTree } from 'vuex';
 import { CurrencyState} from '@/types/modules/currencyTypes'
 import { RootState } from '@/types/index' 
 import axios from 'axios'
-const URL = `http://localhost:5000/currency`
+const URL = process.env.VUE_APP_URL + "/currency"
 
 const state: CurrencyState = {   
     symbol: '$',

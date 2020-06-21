@@ -3,7 +3,7 @@ import { ViewState } from '../../types/modules/listingsTypes'
 import { RootState } from '../../types' 
 import Axios from 'axios'
 
-const URL = "http://localhost:5000/profiles"
+const URL = process.env.VUE_APP_URL +  "/profiles"
 
 const state: ViewState = {
     view: 'Grid',
