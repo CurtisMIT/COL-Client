@@ -56,13 +56,15 @@ import { State, Getter, Action } from 'vuex-class'
 import autosize from 'autosize'
 import { ExpenseState } from '@/types/modules/submitTypes'
 import { CurrencyState } from '@/types/modules/currencyTypes'
+import Autosuggest from '../Autosuggest/Autosuggest.vue'
 import Submit from '../BottomButton/Submit.vue'
 
 const namespace = "submitExpense"
 
 @Component ({
     components: {
-        Submit
+        Submit,
+        Autosuggest
     }
 })
 export default class Expense extends Vue {    

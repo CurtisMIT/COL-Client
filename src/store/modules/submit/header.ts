@@ -4,7 +4,7 @@ import { RootState } from '@/types/index'
 
 const getDefaultHeader = () => {
     return { 
-        current: 0,
+        current: 2,
         stage: [1,2,3],
         progress: [1], 
         header: ['📝 About','💪 Your Job', '💸 Your Expense'],        
